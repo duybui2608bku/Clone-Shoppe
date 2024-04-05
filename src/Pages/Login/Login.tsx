@@ -28,7 +28,7 @@ const Login = () => {
           </div>
           <div className='login-register'>
             Bạn mới biết đến Shoppe?
-            <Link className='a' to={'/'}>
+            <Link className='a' to={'/register'}>
               Đăng kí
             </Link>
           </div>
