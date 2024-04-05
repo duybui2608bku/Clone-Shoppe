@@ -1,0 +1,25 @@
+.register-header-container {
+  margin: 0 200px;
+  height: 84px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .register-header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    .logo {
+      height: 40px;
+      path {
+        fill: var(--main-cloor);
+      }
+    }
+  }
+  .register-header-right {
+    .content {
+      text-decoration: none;
+      font-size: 18px;
+      color: var(--main-cloor);
+    }
+  }
+}
