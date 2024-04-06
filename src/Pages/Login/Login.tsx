@@ -4,11 +4,17 @@ import { FcGoogle } from 'react-icons/fc'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { getRules } from '../../Utils/ruls'
+import { useMutation } from '@tanstack/react-query'
+import { postLogin } from '../../Services/LogInLogOut.api'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
+import { isAxiousUnprocessableEntity } from '../../Utils/Utils'
 const Login = () => {
   interface FormData {
     email: string
     password: string
   }
+  const [errorForm, setErrorForm] = useState<boolean>(false)
 
   const {
     register,
@@ -17,9 +23,26 @@ const Login = () => {
     formState: { errors }
   } = useForm<FormData>()
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
+  const loginMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => {
+      return postLogin(body)
+    }
   })
+
+  const onSubmit = handleSubmit((data) => {
+    loginMutation.mutate(data, {
+      onSuccess: (_) => {
+        toast('Đăng nhập thành công')
+      },
+      onError: (errors: any) => {
+        if (isAxiousUnprocessableEntity(errors)) {
+          toast.error(errors.response.data.data.password)
+          setErrorForm(true)
+        }
+      }
+    })
+  })
+
   const rules = getRules(getValues)
   return (
     <>
@@ -27,19 +50,35 @@ const Login = () => {
         <div className='login-form'>
           <div className='des'>Đăng Nhập</div>
           <form className='form-control' onSubmit={onSubmit}>
-            <input type='text' placeholder='Email/Số điện thoại/Tên đăng nhập' {...register('email', rules.email)} />
+            <input
+              onFocus={() => setErrorForm(false)}
+              type='text'
+              placeholder='Email/Số điện thoại/Tên đăng nhập'
+              {...register('email', rules.email)}
+            />
             {errors.email?.message ? (
               <div className='error-form'>{errors.email?.message}</div>
             ) : (
               <div className='error-form'></div>
             )}
-            <input {...register('password', rules.password)} autoComplete='on' type='password' placeholder='Mật Khẩu' />
+            <input
+              onFocus={() => setErrorForm(false)}
+              {...register('password', rules.password)}
+              autoComplete='on'
+              type='password'
+              placeholder='Mật Khẩu'
+            />
             {errors.password?.message ? (
               <div className='error-form'>{errors.password?.message}</div>
             ) : (
               <div className='error-form'></div>
             )}
-            <button type='submit' className='btn-login'>
+            <button
+              disabled={errorForm}
+              style={errorForm ? { cursor: 'no-drop', backgroundColor: ' #ee4d2d44' } : {}}
+              type='submit'
+              className='btn-login'
+            >
               Đăng Nhập
             </button>
           </form>

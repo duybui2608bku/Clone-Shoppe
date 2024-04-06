@@ -1,0 +1,104 @@
+.header-main-container {
+  height: 130px;
+  background-color: var(--main-cloor);
+  display: flex;
+  flex-direction: column;
+  .header-main-infor {
+    margin: 0 200px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    .conected {
+      display: flex;
+      gap: 15px;
+      .a {
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+    }
+    .account {
+      display: flex;
+      gap: 15px;
+      .a {
+        text-decoration: none;
+        color: white;
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+    }
+  }
+  .header-main-search {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 200px;
+    margin-top: 15px;
+    align-items: center;
+    .logo {
+      height: 45px;
+      path {
+        fill: white;
+      }
+    }
+    .cart {
+      color: white;
+      position: relative;
+      .quantity {
+        position: absolute;
+        top: -10px;
+        right: -18px;
+        font-size: 13px;
+        background-color: white;
+        color: var(--main-cloor);
+        width: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        border: 1px solid var(--main-cloor);
+      }
+    }
+    .input-container {
+      position: relative;
+      input {
+        width: 755px;
+        height: 35px;
+        outline: none;
+        border: none;
+      }
+      .icon-search {
+        position: absolute;
+        top: 4px;
+        right: 6px;
+        background-color: var(--main-cloor);
+        height: 30px;
+        width: 65px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        color: white;
+        :hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .tren {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: 450px;
+    font-size: 13px;
+    margin-top: 10px;
+    color: white;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

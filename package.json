@@ -13,11 +13,20 @@
     "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\""
   },
   "dependencies": {
+    "@tanstack/query-devtools": "^5.28.10",
+    "@tanstack/react-query": "^5.28.14",
+    "@tanstack/react-query-devtools": "^5.28.14",
+    "@types/lodash": "^4.17.0",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.2",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
+    "react-toastify": "^10.0.5",
     "sass": "^1.74.1"
   },
   "devDependencies": {
