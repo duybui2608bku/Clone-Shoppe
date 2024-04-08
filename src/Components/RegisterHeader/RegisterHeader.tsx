@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 import '../RegisterHeader/RegisterHeader.scss'
 const RegisterHeader = () => {
+  const match = useMatch('/register')
+  const isRegister = Boolean(match)
   return (
     <>
       <div className='register-header-container'>
@@ -12,7 +14,7 @@ const RegisterHeader = () => {
               </g>
             </svg>
           </Link>
-          <div className='register-header-feature'>Đăng Nhập</div>
+          <div className='register-header-feature'>{isRegister ? 'Đăng Kí' : 'Đăng Nhập'}</div>
         </div>
         <div className='register-header-right'>
           <Link className='content' to='/'>

@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer, Flip } from 'react-toastify' // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css' // Import CSS của ToastContainer
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { AppProvider } from './Context/App.context.tsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <AppProvider>
+          <App />
+        </AppProvider>
       </QueryClientProvider>
       <ToastContainer
         position='top-right'

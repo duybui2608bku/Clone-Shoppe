@@ -46,17 +46,15 @@ const PopoverNotification = () => {
         <div>Thông Báo Mới Nhận</div>
         {fakeNotification.map((item) => {
           return (
-            <>
-              <div key={item.id} className='notification-item'>
-                <div className='notification-image'>
-                  <img src={item.image} alt={item.title} />
-                </div>
-                <div className='notification-content'>
-                  <div className='title'>{item.title}</div>
-                  <div className='content'>{item.content}</div>
-                </div>
+            <div key={item.id} className='notification-item'>
+              <div className='notification-image'>
+                <img src={item.image} alt={item.title} />
               </div>
-            </>
+              <div className='notification-content'>
+                <div className='title'>{item.title}</div>
+                <div className='content'>{item.content}</div>
+              </div>
+            </div>
           )
         })}
         <div style={{ textAlign: 'center', marginTop: '15px' }}>Xem tất cả</div>

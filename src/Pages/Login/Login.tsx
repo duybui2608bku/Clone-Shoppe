@@ -1,15 +1,19 @@
 import './Login.scss'
 import { FaFacebook } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { getRules } from '../../Utils/ruls'
 import { useMutation } from '@tanstack/react-query'
 import { postLogin } from '../../Services/LogInLogOut.api'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 import { isAxiousUnprocessableEntity } from '../../Utils/Utils'
+import { AppContext } from '../../Context/App.context'
+
 const Login = () => {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const nagivate = useNavigate()
   interface FormData {
     email: string
     password: string
@@ -32,7 +36,7 @@ const Login = () => {
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess: (_) => {
-        toast('Đăng nhập thành công')
+        toast('Đăng nhập thành công'), setIsAuthenticated(true), nagivate('/  ')
       },
       onError: (errors: any) => {
         if (isAxiousUnprocessableEntity(errors)) {
@@ -44,6 +48,7 @@ const Login = () => {
   })
 
   const rules = getRules(getValues)
+
   return (
     <>
       <div className='login-container'>

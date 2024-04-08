@@ -1,7 +1,7 @@
 import './Register.scss'
 import { FaFacebook } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { getRules } from '../../Utils/ruls'
 import { postRegister } from '../../Services/LogInLogOut.api'
@@ -12,6 +12,7 @@ import { isAxiousUnprocessableEntity } from '../../Utils/Utils'
 import { useState } from 'react'
 const Register = () => {
   const [errorForm, setErrorForm] = useState<boolean>(false)
+  const navigate = useNavigate()
   interface FormData {
     email: string
     password: string
@@ -34,7 +35,10 @@ const Register = () => {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
-      onSuccess: (_) => {},
+      onSuccess: (_) => {
+        toast('Đăng kí thành công, mời đăng nhập')
+        navigate('/login')
+      },
       onError: (errors: any) => {
         if (isAxiousUnprocessableEntity(errors)) {
           toast.error(errors.response.data.data.email)

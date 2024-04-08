@@ -5,15 +5,16 @@ import { AiFillInstagram } from 'react-icons/ai'
 import { GoQuestion } from 'react-icons/go'
 import { RiGlobalLine } from 'react-icons/ri'
 import { VscAccount } from 'react-icons/vsc'
-import { FiShoppingCart } from 'react-icons/fi'
 import { IoIosSearch } from 'react-icons/io'
 import Dropdown from 'react-bootstrap/Dropdown'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import PopoverAccount from '../Popover/PopoverAccount'
 import PopoverNotification from '../Popover/PopoverNofication'
 import PopoverCart from '../Popover/PopoverCart'
+import { AppContext } from '../../Context/App.context'
 const HeaderMain = () => {
   const [language, setLanguage] = useState<Boolean>(true)
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
   return (
     <div className='header-main-container'>
       <div className='header-main-infor'>
@@ -51,9 +52,20 @@ const HeaderMain = () => {
               </Dropdown.Menu>
             </Dropdown>
           </Link>
-          <Link className='a' to={'/'}>
-            <VscAccount /> <PopoverAccount />
-          </Link>
+          {isAuthenticated ? (
+            <Link className='a' to={'/'}>
+              <VscAccount /> <PopoverAccount />
+            </Link>
+          ) : (
+            <>
+              <Link className='a' to={'/login'}>
+                Đăng Nhập
+              </Link>
+              <Link className='a' to={'/register'}>
+                Đăng Kí
+              </Link>
+            </>
+          )}
         </div>
       </div>
       <div className='header-main-search'>

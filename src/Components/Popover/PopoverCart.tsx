@@ -62,20 +62,18 @@ const PopoverCart = () => {
         <div>Sản Phẩm Mới Thêm</div>
         {fakeCart.slice(0, 4).map((item) => {
           return (
-            <>
-              <div key={item.id} className='cart-item'>
-                <div className='cart-image'>
-                  <img src={item.image} alt={item.title} />
-                </div>
-                <div className='cart-title'>
-                  <p>{item.title}</p>
-                </div>
-                <div className='cart-price'>
-                  <sup>đ</sup>
-                  {item.price}
-                </div>
+            <div key={item.id} className='cart-item'>
+              <div className='cart-image'>
+                <img src={item.image} alt={item.title} />
               </div>
-            </>
+              <div className='cart-title'>
+                <p>{item.title}</p>
+              </div>
+              <div className='cart-price'>
+                <sup>đ</sup>
+                {item.price}
+              </div>
+            </div>
           )
         })}
         <div className='popover-cart-footer'>
