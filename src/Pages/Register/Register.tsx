@@ -50,7 +50,7 @@ const Register = () => {
       <div className='login-container'>
         <div className='login-form'>
           <div className='des'>Đăng Kí</div>
-          <form className='form-control' onSubmit={onSubmit}>
+          <form className='form-controls' onSubmit={onSubmit}>
             <input
               onFocus={() => setErrorForm(false)}
               type='text'

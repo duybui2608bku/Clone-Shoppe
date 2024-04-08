@@ -49,7 +49,7 @@ const Login = () => {
       <div className='login-container'>
         <div className='login-form'>
           <div className='des'>Đăng Nhập</div>
-          <form className='form-control' onSubmit={onSubmit}>
+          <form className='form-controls' onSubmit={onSubmit}>
             <input
               onFocus={() => setErrorForm(false)}
               type='text'
