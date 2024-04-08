@@ -1,0 +1,32 @@
+.popover-cart-container {
+  min-width: 350px;
+  .popover-cart-content {
+    .cart-item {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      .cart-image {
+        width: 100px;
+        height: 50px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .cart-price {
+        color: var(--main-cloor);
+        font-size: 17px;
+      }
+    }
+  }
+}
+
+.popover-cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popover-cart-icon {
+  position: relative;
+}

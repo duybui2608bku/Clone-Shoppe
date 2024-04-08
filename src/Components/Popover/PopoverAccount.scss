@@ -1,0 +1,14 @@
+.popover-header-container {
+  .popover-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    .a {
+      text-decoration: none;
+      color: black;
+      &:hover {
+        color: var(--main-cloor);
+      }
+    }
+  }
+}

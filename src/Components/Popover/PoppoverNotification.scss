@@ -1,0 +1,28 @@
+.popover-notification-container {
+  cursor: pointer;
+  .popover-notification-content {
+    .notification-item {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      margin-top: 15px;
+      &:hover {
+        background-color: #ee4d2d44;
+      }
+      .notification-image {
+        width: 60px;
+        height: 50px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .notification-content {
+        .title {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

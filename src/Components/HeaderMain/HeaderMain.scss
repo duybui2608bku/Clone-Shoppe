@@ -1,5 +1,5 @@
 .header-main-container {
-  height: 130px;
+  height: 150px;
   background-color: var(--main-cloor);
   display: flex;
   flex-direction: column;
@@ -73,7 +73,8 @@
       }
       .icon-search {
         position: absolute;
-        top: 4px;
+        font-size: 20px;
+        top: 3px;
         right: 6px;
         background-color: var(--main-cloor);
         height: 30px;

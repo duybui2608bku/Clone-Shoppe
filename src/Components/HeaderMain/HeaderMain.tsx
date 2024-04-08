@@ -2,13 +2,18 @@ import { Link } from 'react-router-dom'
 import './HeaderMain.scss'
 import { IoLogoFacebook } from 'react-icons/io5'
 import { AiFillInstagram } from 'react-icons/ai'
-import { IoNotificationsOutline } from 'react-icons/io5'
 import { GoQuestion } from 'react-icons/go'
 import { RiGlobalLine } from 'react-icons/ri'
 import { VscAccount } from 'react-icons/vsc'
 import { FiShoppingCart } from 'react-icons/fi'
 import { IoIosSearch } from 'react-icons/io'
+import Dropdown from 'react-bootstrap/Dropdown'
+import { useState } from 'react'
+import PopoverAccount from '../Popover/PopoverAccount'
+import PopoverNotification from '../Popover/PopoverNofication'
+import PopoverCart from '../Popover/PopoverCart'
 const HeaderMain = () => {
+  const [language, setLanguage] = useState<Boolean>(true)
   return (
     <div className='header-main-container'>
       <div className='header-main-infor'>
@@ -25,17 +30,29 @@ const HeaderMain = () => {
         </div>
         <div className='account'>
           <Link className='a' to={'/'}>
-            <IoNotificationsOutline /> Thông Báo
+            <PopoverNotification />
           </Link>
           <Link className='a' to={'/'}>
             {' '}
             <GoQuestion /> Hỗ Trợ
           </Link>
           <Link className='a' to={'/'}>
-            <RiGlobalLine /> Tiếng Việt
+            <Dropdown>
+              <Dropdown.Toggle variant='' style={{ color: 'white', border: 'none' }}>
+                <RiGlobalLine /> {language ? 'Tiếng Việt' : 'Tiếng Anh'}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setLanguage(true)} style={{ background: 'none' }}>
+                  Tiếng Việt
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setLanguage(false)} style={{ background: 'none' }}>
+                  Tiếng Anh
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Link>
           <Link className='a' to={'/'}>
-            <VscAccount /> Tài Khoản
+            <VscAccount /> <PopoverAccount />
           </Link>
         </div>
       </div>
@@ -56,8 +73,7 @@ const HeaderMain = () => {
           </div>
         </div>
         <div className='cart'>
-          <FiShoppingCart />
-          <div className='quantity'>5</div>
+          <PopoverCart />
         </div>
       </div>
       <div className='tren'>
