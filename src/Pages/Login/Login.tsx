@@ -12,7 +12,7 @@ import { isAxiousUnprocessableEntity } from '../../Utils/Utils'
 import { AppContext } from '../../Context/App.context'
 
 const Login = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const nagivate = useNavigate()
   interface FormData {
     email: string
@@ -35,8 +35,8 @@ const Login = () => {
 
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (_) => {
-        toast('Đăng nhập thành công'), setIsAuthenticated(true), nagivate('/  ')
+      onSuccess: (data) => {
+        toast('Đăng nhập thành công'), setIsAuthenticated(true), nagivate('/  '), setProfile(data.data.data.user)
       },
       onError: (errors: any) => {
         if (isAxiousUnprocessableEntity(errors)) {

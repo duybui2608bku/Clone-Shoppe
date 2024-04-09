@@ -1,9 +1,10 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
 import { toast } from 'react-toastify'
 import { AuthResponse } from '../Types/Auth.type'
-import { clearAcccessTokenFormLS, getAccessTokenFormLS, saveAccessTokenToLS } from './Auth'
+import { clearLS, getAccessTokenFormLS, getProfileFromLS, saveAccessTokenToLS, setProfileFromLS } from './Auth'
 
 let accesstoken = getAccessTokenFormLS()
+let profileUser = getProfileFromLS()
 
 const axiosInstance = axios.create({
   baseURL: 'https://api-ecom.duthanhduoc.com/',
@@ -31,10 +32,12 @@ axiosInstance.interceptors.response.use(
     const { url } = response.config
     if (url === '/login' || url === '/register') {
       accesstoken = (response.data as AuthResponse).data?.access_token
+      profileUser = (response.data as AuthResponse).data?.user
       saveAccessTokenToLS(accesstoken)
+      setProfileFromLS(profileUser)
     } else if (url === '/logout') {
       accesstoken = ''
-      clearAcccessTokenFormLS()
+      clearLS()
     }
     return response
   },

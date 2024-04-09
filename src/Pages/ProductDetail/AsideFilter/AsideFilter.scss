@@ -1,0 +1,56 @@
+.aside-container {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  .aside-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .aside-category {
+    padding: 10px;
+    font-size: 17px;
+    font-weight: 400;
+    .category-item {
+      margin-bottom: 10px;
+      &.category-item:nth-child(1) {
+        color: var(--main-cloor);
+        font-weight: 600;
+      }
+    }
+  }
+  .aside-sort {
+    margin-bottom: 20px;
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .sort-approx {
+      .form-sort {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        input {
+          width: 70px;
+        }
+      }
+    }
+    .sort-rate {
+      .title {
+        margin: 10px 0;
+      }
+      .star {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .star-row {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+        }
+      }
+    }
+  }
+}

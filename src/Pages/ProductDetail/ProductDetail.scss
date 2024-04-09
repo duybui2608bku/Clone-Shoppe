@@ -1,0 +1,100 @@
+.products-detail-container {
+  background-color: var(--footer-color);
+  cursor: pointer;
+  .products-slider {
+    margin: 0 200px;
+    padding-top: 20px;
+    img {
+      width: 100%;
+    }
+  }
+  .product-mall {
+    margin: 0 200px;
+    margin-top: 20px;
+    background-color: white;
+    .title {
+      text-align: center;
+      font-size: 30px;
+      color: rgb(208, 1, 27);
+      padding: 20px 0;
+    }
+    .image {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      img {
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--footer-color);
+      }
+    }
+  }
+  .product-detail-item {
+    margin: 0 200px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    .product-detail-item-left {
+      min-width: 200px;
+    }
+    .product-detail-item-right {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      .product-item-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        .products-item {
+          background-color: white;
+          position: relative;
+          &:hover {
+            border: 2px solid var(--main-cloor);
+          }
+          .products-image {
+            width: 100%;
+            height: 230px;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .products-title {
+            padding: 10px;
+            font-size: 17px;
+            width: 175px;
+            p {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              max-width: 100%;
+            }
+          }
+          .products-price-sold {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            align-items: center;
+            .price {
+              color: var(--main-cloor);
+              font-size: 17px;
+            }
+            .sold {
+              font-size: 11px;
+            }
+          }
+        }
+        .discount {
+          position: absolute;
+          top: 0;
+          right: 0;
+          background-color: #ffe97a;
+          width: 40px;
+          text-align: center;
+          color: var(--main-cloor);
+        }
+      }
+    }
+  }
+}

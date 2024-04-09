@@ -1,6 +1,6 @@
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './PopoverAccount.scss'
 import { useMutation } from '@tanstack/react-query'
 import { postLogOut } from '../../Services/LogInLogOut.api'
@@ -8,14 +8,14 @@ import { useContext } from 'react'
 import { AppContext } from '../../Context/App.context'
 
 const PopoverAccount = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
-  const navigate = useNavigate()
+  const { setIsAuthenticated, setProfile, profile } = useContext(AppContext)
   const logOutMutation = useMutation({
     mutationFn: (_) => {
       return postLogOut()
     },
     onSuccess: (_) => {
       setIsAuthenticated(false)
+      setProfile(null)
     }
   })
 
@@ -41,7 +41,7 @@ const PopoverAccount = () => {
 
   return (
     <OverlayTrigger trigger='click' placement='bottom' overlay={popover}>
-      <div>Tài Khoản</div>
+      <div>{profile?.email}</div>
     </OverlayTrigger>
   )
 }

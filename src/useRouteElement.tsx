@@ -7,27 +7,26 @@ import MainLayOut from './Layout/MainLayout/MainLayout'
 import Profile from './Pages/Profile/Profile'
 import { useContext } from 'react'
 import { AppContext } from './Context/App.context'
-
-const ProtectedRoute = () => {
-  const { isAuthenticated } = useContext(AppContext)
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
-}
-
-const RejectedRoute = () => {
-  const { isAuthenticated } = useContext(AppContext)
-  return !isAuthenticated ? <Outlet /> : <Navigate to={'/'} />
-}
+import ProductDetail from './Pages/ProductDetail/ProductDetail'
 
 const useRouterElement = () => {
+  const ProtectedRoute = () => {
+    const { isAuthenticated } = useContext(AppContext)
+    return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
+  }
+
+  const RejectedRoute = () => {
+    const { isAuthenticated } = useContext(AppContext)
+    return !isAuthenticated ? <Outlet /> : <Navigate to={'/'} />
+  }
+  const { isProductsDetail } = useContext(AppContext)
+
+  const isDetail = isProductsDetail
   const routElemnet = useRoutes([
     {
       path: '/',
       index: true,
-      element: (
-        <MainLayOut>
-          <ProductList />
-        </MainLayOut>
-      )
+      element: <MainLayOut>{isDetail ? <ProductDetail /> : <ProductList />}</MainLayOut>
     },
     {
       path: '',

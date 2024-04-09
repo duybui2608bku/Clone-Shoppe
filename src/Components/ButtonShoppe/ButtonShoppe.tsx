@@ -1,11 +1,18 @@
 type ButtonShoppeProps = {
-  title: string
+  title?: string
+  bachGround?: string
+  colorText?: string
 }
 
-const ButtonShoppe: React.FC<ButtonShoppeProps> = ({ title }) => {
+const ButtonShoppe: React.FC<ButtonShoppeProps> = ({ title, bachGround, colorText }) => {
   return (
     <button
-      style={{ backgroundColor: '#ee4d2d', border: 'none', color: 'white', padding: '10px 30px' }}
+      style={{
+        backgroundColor: bachGround ? bachGround : '#ee4d2d',
+        border: 'none',
+        color: colorText ? colorText : 'white',
+        padding: '10px 30px'
+      }}
       className='button-shoppe'
     >
       {title}
