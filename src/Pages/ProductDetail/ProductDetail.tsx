@@ -6,6 +6,8 @@ import SortProductList from './SortProductList/SortProductList'
 import useQueryParams from '../../Hooks/useQueryParams'
 import productApi from '../../Services/Products.api'
 import { useQuery } from '@tanstack/react-query'
+import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
+import ProductRating from '../../Components/ProductRating/ProductRating'
 const ProductDetail = () => {
   const images = [
     'https://cf.shopee.vn/file/vn-50009109-410a98988272057c05c79c48f961163d',
@@ -24,6 +26,7 @@ const ProductDetail = () => {
       return productApi.getProducts(queryParams)
     }
   })
+  console.log(data)
 
   const caculateDiscount = (priceOld: number, priceNew: number): number => {
     return Math.ceil(((priceOld - priceNew) / priceOld) * 100)
@@ -75,12 +78,21 @@ const ProductDetail = () => {
                       <div className='products-title'>
                         <p>{products.name}</p>
                       </div>
-                      <div className='products-price-sold'>
-                        <div className='price'>
+                      <div className='products-price'>
+                        <div className='price-old'>
                           <sup>đ</sup>
-                          {products.price}
+                          {formatCurrency(products.price_before_discount)}
                         </div>
-                        <div className='sold'>Đã bán {products.sold}</div>
+                        <div className='price-new'>
+                          <sup>đ</sup>
+                          {formatCurrency(products.price)}
+                        </div>
+                      </div>
+                      <div className='products-sold'>
+                        <div>
+                          <ProductRating rating={products.rating} />
+                        </div>
+                        <div style={{ fontSize: '12px' }}>Đã bán {formatNumberToSocialStyle(products.sold)}</div>
                       </div>
                       <div className='discount'>
                         {caculateDiscount(products.price_before_discount, products.price)}%

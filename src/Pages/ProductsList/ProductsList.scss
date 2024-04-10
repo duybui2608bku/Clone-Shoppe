@@ -90,6 +90,7 @@
     gap: 10px;
     .products-item {
       background-color: white;
+      border: 1px solid #dddddd;
       position: relative;
       &:hover {
         border: 2px solid var(--main-cloor);
