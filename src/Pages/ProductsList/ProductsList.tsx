@@ -171,7 +171,7 @@ const ProductList = () => {
         {initOther.map((item, index) => {
           return (
             <>
-              <div key={index} className='other-item'>
+              <div className='other-item'>
                 <div>
                   {' '}
                   <img src={item.image} alt={item.title} />

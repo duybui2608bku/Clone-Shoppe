@@ -8,6 +8,8 @@ import productApi from '../../Services/Products.api'
 import { useQuery } from '@tanstack/react-query'
 import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
 import ProductRating from '../../Components/ProductRating/ProductRating'
+import Pagination from '../../Components/Paginate/Pagination'
+import { useState } from 'react'
 const ProductDetail = () => {
   const images = [
     'https://cf.shopee.vn/file/vn-50009109-410a98988272057c05c79c48f961163d',
@@ -26,7 +28,8 @@ const ProductDetail = () => {
       return productApi.getProducts(queryParams)
     }
   })
-  console.log(data)
+
+  const [page, setPage] = useState<number>(1)
 
   const caculateDiscount = (priceOld: number, priceNew: number): number => {
     return Math.ceil(((priceOld - priceNew) / priceOld) * 100)
@@ -102,6 +105,7 @@ const ProductDetail = () => {
                 )
               })}
             </div>
+            <Pagination page={page} setPage={setPage} pageSize={20} />
           </div>
         </div>
       </div>
