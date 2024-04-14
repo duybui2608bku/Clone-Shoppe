@@ -12,6 +12,8 @@ import Pagination from '../../Components/Paginate/Pagination'
 import { ProductListConfig } from '../../Types/Product.type'
 import { isUndefined, omitBy } from 'lodash'
 import categoryApi from '../../Services/CategotyApi.api'
+import { useNavigate } from 'react-router-dom'
+import path from '../../constants/path'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
@@ -58,7 +60,7 @@ const ProductDetail = () => {
     }
   })
 
-  console.log(categoryData)
+  const nagivate = useNavigate()
 
   const caculateDiscount = (priceOld: number, priceNew: number): number => {
     return Math.ceil(((priceOld - priceNew) / priceOld) * 100)
@@ -106,7 +108,13 @@ const ProductDetail = () => {
                     productsData?.data.data.products.map((products, index) => {
                       return (
                         <>
-                          <div key={index} className='products-item'>
+                          <div
+                            onClick={() => {
+                              nagivate(`${path.home}${products._id}`)
+                            }}
+                            key={index}
+                            className='products-item'
+                          >
                             <div className='products-image'>
                               <img src={products.image} />
                             </div>

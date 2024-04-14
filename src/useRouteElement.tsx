@@ -8,6 +8,8 @@ import Profile from './Pages/Profile/Profile'
 import { useContext } from 'react'
 import { AppContext } from './Context/App.context'
 import ProductDetail from './Pages/ProductDetail/ProductDetail'
+import ProductItem from './Pages/ProductItem/ProductItem'
+import path from './constants/path'
 
 const useRouterElement = () => {
   const ProtectedRoute = () => {
@@ -27,6 +29,11 @@ const useRouterElement = () => {
       path: '/',
       index: true,
       element: <MainLayOut>{isDetail ? <ProductDetail /> : <ProductList />}</MainLayOut>
+    },
+    {
+      path: path.productDetail,
+      index: true,
+      element: <MainLayOut>{isDetail ? <ProductItem /> : <ProductList />}</MainLayOut>
     },
     {
       path: '',

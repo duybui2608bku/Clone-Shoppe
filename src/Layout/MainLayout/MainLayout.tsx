@@ -8,7 +8,7 @@ interface Props {
 const MainLayOut = ({ children }: Props) => {
   return (
     <>
-      <div className='main-layout'>
+      <div style={{ backgroundColor: '#f5f5f5' }} className='main-layout'>
         <HeaderMain />
         <div>{children}</div>
         <Footer />
