@@ -9,7 +9,14 @@ import { useQuery } from '@tanstack/react-query'
 import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
 import ProductRating from '../../Components/ProductRating/ProductRating'
 import Pagination from '../../Components/Paginate/Pagination'
-import { useState } from 'react'
+import { ProductListConfig } from '../../Types/Product.type'
+import { isUndefined, omitBy } from 'lodash'
+import categoryApi from '../../Services/CategotyApi.api'
+
+export type QueryConfig = {
+  [key in keyof ProductListConfig]: string
+}
+
 const ProductDetail = () => {
   const images = [
     'https://cf.shopee.vn/file/vn-50009109-410a98988272057c05c79c48f961163d',
@@ -20,16 +27,38 @@ const ProductDetail = () => {
     'https://cf.shopee.vn/file/vn-50009109-82c3a458f0b6eb3dff94e8acae1a919f',
     'https://cf.shopee.vn/file/vn-50009109-0cedc0eb80813f8b8ee8ebc2812c3cfa'
   ]
-  const queryParams = useQueryParams()
+  const queryParams: QueryConfig = useQueryParams()
+  const queryConfig: QueryConfig = omitBy(
+    {
+      page: queryParams.page || '1',
+      limit: queryParams.limit || 10,
+      sort_by: queryParams.sort_by,
+      exclude: queryParams.exclude,
+      name: queryParams.name,
+      oder: queryParams.oder,
+      price_max: queryParams.price_max,
+      price_min: queryParams.price_min,
+      rating_filter: queryParams.rating_filter,
+      category: queryParams.category
+    },
+    isUndefined
+  )
 
-  const { data } = useQuery({
+  const { data: productsData } = useQuery({
     queryKey: ['products', queryParams],
     queryFn: () => {
-      return productApi.getProducts(queryParams)
+      return productApi.getProducts(queryConfig as ProductListConfig)
     }
   })
 
-  const [page, setPage] = useState<number>(1)
+  const { data: categoryData } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => {
+      return categoryApi.getCategories()
+    }
+  })
+
+  console.log(categoryData)
 
   const caculateDiscount = (priceOld: number, priceNew: number): number => {
     return Math.ceil(((priceOld - priceNew) / priceOld) * 100)
@@ -64,48 +93,53 @@ const ProductDetail = () => {
         </div>
         <div className='product-detail-item'>
           <div className='product-detail-item-left'>
-            <AsideFilter />
+            <AsideFilter queryConfig={queryConfig} categories={categoryData?.data.data || []} />
           </div>
           <div className='product-detail-item-right'>
-            <div className='sort'>
-              <SortProductList />
-            </div>
-            <div className='product-item-container'>
-              {data?.data.data.products.map((products, index) => {
-                return (
-                  <>
-                    <div key={index} className='products-item'>
-                      <div className='products-image'>
-                        <img src={products.image} />
-                      </div>
-                      <div className='products-title'>
-                        <p>{products.name}</p>
-                      </div>
-                      <div className='products-price'>
-                        <div className='price-old'>
-                          <sup>đ</sup>
-                          {formatCurrency(products.price_before_discount)}
-                        </div>
-                        <div className='price-new'>
-                          <sup>đ</sup>
-                          {formatCurrency(products.price)}
-                        </div>
-                      </div>
-                      <div className='products-sold'>
-                        <div>
-                          <ProductRating rating={products.rating} />
-                        </div>
-                        <div style={{ fontSize: '12px' }}>Đã bán {formatNumberToSocialStyle(products.sold)}</div>
-                      </div>
-                      <div className='discount'>
-                        {caculateDiscount(products.price_before_discount, products.price)}%
-                      </div>
-                    </div>
-                  </>
-                )
-              })}
-            </div>
-            <Pagination page={page} setPage={setPage} pageSize={20} />
+            {productsData && (
+              <>
+                <div className='sort'>
+                  <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
+                </div>
+                <div className='product-item-container'>
+                  {productsData &&
+                    productsData?.data.data.products.map((products, index) => {
+                      return (
+                        <>
+                          <div key={index} className='products-item'>
+                            <div className='products-image'>
+                              <img src={products.image} />
+                            </div>
+                            <div className='products-title'>
+                              <p>{products.name}</p>
+                            </div>
+                            <div className='products-price'>
+                              <div className='price-old'>
+                                <sup>đ</sup>
+                                {formatCurrency(products.price_before_discount)}
+                              </div>
+                              <div className='price-new'>
+                                <sup>đ</sup>
+                                {formatCurrency(products.price)}
+                              </div>
+                            </div>
+                            <div className='products-sold'>
+                              <div>
+                                <ProductRating rating={products.rating} />
+                              </div>
+                              <div style={{ fontSize: '12px' }}>Đã bán {formatNumberToSocialStyle(products.sold)}</div>
+                            </div>
+                            <div className='discount'>
+                              {caculateDiscount(products.price_before_discount, products.price)}%
+                            </div>
+                          </div>
+                        </>
+                      )
+                    })}
+                </div>
+                <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
+              </>
+            )}
           </div>
         </div>
       </div>

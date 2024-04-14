@@ -1,14 +1,16 @@
 import './Pagination.scss'
 import { MdOutlineArrowBackIos } from 'react-icons/md'
 import { MdOutlineArrowForwardIos } from 'react-icons/md'
+import { QueryConfig } from '../../Pages/ProductDetail/ProductDetail'
+import { Link, createSearchParams } from 'react-router-dom'
 interface Props {
-  page: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
+  queryConfig: QueryConfig
   pageSize: number
 }
 const RANGE = 2
 
-const Pagination = ({ page, setPage, pageSize }: Props) => {
+const Pagination = ({ queryConfig, pageSize }: Props) => {
+  const page = Number(queryConfig.page)
   const renderPagination = () => {
     let dotAfter = false
     let dotBefore = false
@@ -43,22 +45,58 @@ const Pagination = ({ page, setPage, pageSize }: Props) => {
           return renderDotBefor(index)
         }
         return (
-          <button
-            onClick={() => setPage(pageNumber)}
-            className={pageNumber === page ? 'active' : 'noActive'}
+          <Link
+            to={{
+              pathname: '/',
+              search: createSearchParams({
+                ...queryConfig,
+                page: pageNumber.toString()
+              }).toString()
+            }}
+            className={`${pageNumber === page ? 'active' : 'noActive'} button`}
             key={index}
           >
             {pageNumber}
-          </button>
+          </Link>
         )
       })
   }
   return (
     <>
       <div className='pagination-container'>
-        <MdOutlineArrowBackIos />
+        {page === 1 ? (
+          <MdOutlineArrowBackIos style={{ cursor: 'not-allowed' }} />
+        ) : (
+          <Link
+            to={{
+              pathname: '/',
+              search: createSearchParams({
+                ...queryConfig,
+                page: (page - 1).toString()
+              }).toString()
+            }}
+            className='button'
+          >
+            <MdOutlineArrowBackIos />
+          </Link>
+        )}
         {renderPagination()}
-        <MdOutlineArrowForwardIos />
+        {page === pageSize ? (
+          <MdOutlineArrowForwardIos style={{ cursor: 'not-allowed' }} />
+        ) : (
+          <Link
+            to={{
+              pathname: '/',
+              search: createSearchParams({
+                ...queryConfig,
+                page: (page + 1).toString()
+              }).toString()
+            }}
+            className='button'
+          >
+            <MdOutlineArrowForwardIos />
+          </Link>
+        )}
       </div>
     </>
   )

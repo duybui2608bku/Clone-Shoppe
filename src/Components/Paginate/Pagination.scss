@@ -7,11 +7,12 @@
   font-size: 23px;
   margin: 15px 0;
   color: rgba(0, 0, 0, 0.4);
-  button {
+  .button {
     border: none;
     background-color: transparent;
     color: rgba(0, 0, 0, 0.4);
     padding: 0 15px;
+    text-decoration: none;
   }
   .active {
     background-color: var(--main-cloor);

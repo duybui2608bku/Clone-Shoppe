@@ -9,6 +9,7 @@ import productApi from '../../Services/Products.api'
 import ButtonShoppe from '../../Components/ButtonShoppe/ButtonShoppe'
 import { useContext } from 'react'
 import { AppContext } from '../../Context/App.context'
+import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
 
 const ProductList = () => {
   const images = [
@@ -171,7 +172,7 @@ const ProductList = () => {
         {initOther.map((item, index) => {
           return (
             <>
-              <div className='other-item'>
+              <div key={index} className='other-item'>
                 <div>
                   {' '}
                   <img src={item.image} alt={item.title} />
@@ -220,9 +221,9 @@ const ProductList = () => {
                   <div className='products-price-sold'>
                     <div className='price'>
                       <sup>đ</sup>
-                      {products.price}
+                      {formatCurrency(products.price)}
                     </div>
-                    <div className='sold'>Đã bán {products.sold}</div>
+                    <div className='sold'>Đã bán {formatNumberToSocialStyle(products.sold)}</div>
                   </div>
                   <div className='discount'>{caculateDiscount(products.price_before_discount, products.price)}%</div>
                 </div>
