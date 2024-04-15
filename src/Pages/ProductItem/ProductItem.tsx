@@ -21,6 +21,7 @@ import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product } from '../../Types/Product.type'
 import { getIdFromNameId } from '../../Types/Utils.type'
+import QuantityController from '../../Components/QuantityController/QuantityController'
 
 const ProductItem = () => {
   const { nameId } = useParams()
@@ -91,6 +92,10 @@ const ProductItem = () => {
   ]
 
   const imgRef = useRef<HTMLImageElement>(null)
+  const [byCount, setByCount] = useState(1)
+  const handleBuyCount = (value: number) => {
+    setByCount(value)
+  }
 
   const caculateDiscount = (priceOld: number, priceNew: number): number => {
     return Math.ceil(((priceOld - priceNew) / priceOld) * 100)
@@ -250,11 +255,13 @@ const ProductItem = () => {
           <div className='product-quantity'>
             <div>Số Lượng</div>
             <div className='quantity'>
-              <div>
-                <button>-</button>
-                <button>1</button>
-                <button>+</button>
-              </div>
+              <QuantityController
+                value={byCount}
+                onDecrease={handleBuyCount}
+                onIncrease={handleBuyCount}
+                onType={handleBuyCount}
+                max={product.quantity}
+              />
               <div>
                 {product.quantity} Sản Phẩm Có Sẵn<nav></nav>
               </div>

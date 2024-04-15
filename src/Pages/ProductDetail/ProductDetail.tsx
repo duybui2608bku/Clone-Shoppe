@@ -3,18 +3,17 @@ import CaroseImageProductList from './CaroseImageProductList'
 import './ProductDetail.scss'
 import AsideFilter from './AsideFilter/AsideFilter'
 import SortProductList from './SortProductList/SortProductList'
-import useQueryParams from '../../Hooks/useQueryParams'
 import productApi from '../../Services/Products.api'
 import { useQuery } from '@tanstack/react-query'
 import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
 import ProductRating from '../../Components/ProductRating/ProductRating'
 import Pagination from '../../Components/Paginate/Pagination'
 import { ProductListConfig } from '../../Types/Product.type'
-import { isUndefined, omitBy } from 'lodash'
 import categoryApi from '../../Services/CategotyApi.api'
 import { useNavigate } from 'react-router-dom'
 import path from '../../constants/path'
 import { generateNameId } from '../../Types/Utils.type'
+import useQueryConfig from '../../Hooks/useQueryConfig'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
@@ -30,25 +29,10 @@ const ProductDetail = () => {
     'https://cf.shopee.vn/file/vn-50009109-82c3a458f0b6eb3dff94e8acae1a919f',
     'https://cf.shopee.vn/file/vn-50009109-0cedc0eb80813f8b8ee8ebc2812c3cfa'
   ]
-  const queryParams: QueryConfig = useQueryParams()
-  const queryConfig: QueryConfig = omitBy(
-    {
-      page: queryParams.page || '1',
-      limit: queryParams.limit || 10,
-      sort_by: queryParams.sort_by,
-      exclude: queryParams.exclude,
-      name: queryParams.name,
-      oder: queryParams.oder,
-      price_max: queryParams.price_max,
-      price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter,
-      category: queryParams.category
-    },
-    isUndefined
-  )
+  const queryConfig = useQueryConfig()
 
   const { data: productsData } = useQuery({
-    queryKey: ['products', queryParams],
+    queryKey: ['products', queryConfig],
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig)
     }

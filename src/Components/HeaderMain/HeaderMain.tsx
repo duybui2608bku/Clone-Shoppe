@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import './HeaderMain.scss'
 import { IoLogoFacebook } from 'react-icons/io5'
 import { AiFillInstagram } from 'react-icons/ai'
@@ -12,9 +12,34 @@ import PopoverAccount from '../Popover/PopoverAccount'
 import PopoverNotification from '../Popover/PopoverNofication'
 import PopoverCart from '../Popover/PopoverCart'
 import { AppContext } from '../../Context/App.context'
+import useQueryConfig from '../../Hooks/useQueryConfig'
+import { useForm } from 'react-hook-form'
+import path from '../../constants/path'
+import { omit } from 'lodash'
 const HeaderMain = () => {
   const [language, setLanguage] = useState<Boolean>(true)
   const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+  const queryConfig = useQueryConfig()
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      name: ''
+    }
+  })
+  const onSubmitSearch = handleSubmit((data) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order']
+        )
+      ).toString()
+    })
+  })
   return (
     <div className='header-main-container'>
       <div className='header-main-infor'>
@@ -79,7 +104,9 @@ const HeaderMain = () => {
           </Link>
         </div>
         <div className='input-container'>
-          <input type='text'></input>
+          <form onSubmit={onSubmitSearch}>
+            <input {...register('name')} type='text'></input>
+          </form>
           <div className='icon-search'>
             <IoIosSearch />
           </div>
