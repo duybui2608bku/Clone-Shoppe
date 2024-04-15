@@ -235,6 +235,9 @@ const ProductList = () => {
           <ButtonShoppe title='Xem Thêm' />
         </div>
       </div>
+      {/* <div className='ads'>
+        <img src='https://cf.shopee.vn/file/vn-50009109-6633b5cef23abfb566cb1bdf80018aee' />
+      </div> */}
     </>
   )
 }

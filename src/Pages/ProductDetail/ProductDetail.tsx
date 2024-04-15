@@ -14,6 +14,7 @@ import { isUndefined, omitBy } from 'lodash'
 import categoryApi from '../../Services/CategotyApi.api'
 import { useNavigate } from 'react-router-dom'
 import path from '../../constants/path'
+import { generateNameId } from '../../Types/Utils.type'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
@@ -110,7 +111,7 @@ const ProductDetail = () => {
                         <>
                           <div
                             onClick={() => {
-                              nagivate(`${path.home}${products._id}`)
+                              nagivate(`${path.home}${generateNameId({ name: products.name, id: products._id })}`)
                             }}
                             key={index}
                             className='products-item'

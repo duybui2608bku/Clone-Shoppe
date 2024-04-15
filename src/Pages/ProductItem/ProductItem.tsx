@@ -17,10 +17,14 @@ import { MdOutlineMessage } from 'react-icons/md'
 import { CiShop } from 'react-icons/ci'
 import { IoIosArrowBack } from 'react-icons/io'
 import { IoIosArrowForward } from 'react-icons/io'
-import { ProductListConfig } from '../../Types/Product.type'
+import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Product } from '../../Types/Product.type'
+import { getIdFromNameId } from '../../Types/Utils.type'
 
 const ProductItem = () => {
   const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
   const images = [
     'https://cf.shopee.vn/file/vn-50009109-ff3806f443aada213cb77de3b9305310_xxhdpi',
     'https://cf.shopee.vn/file/vn-50009109-3fbe50f24cc6db0332ea13fd843f4c57_xxhdpi',
@@ -86,28 +90,88 @@ const ProductItem = () => {
     }
   ]
 
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  const caculateDiscount = (priceOld: number, priceNew: number): number => {
+    return Math.ceil(((priceOld - priceNew) / priceOld) * 100)
+  }
+
   const { data: ProductDetailData } = useQuery({
     queryKey: ['products', nameId],
-    queryFn: () => productApi.getProductDetail(nameId as string)
+    queryFn: () => productApi.getProductDetail(id)
   })
+
+  const product = ProductDetailData?.data.data
+  const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
+  const currentImages = useMemo(
+    () => (product ? product.images.slice(...currentIndexImages) : []),
+    [product, currentIndexImages]
+  )
+  const [activeImage, setActiveImage] = useState('')
+  useEffect(() => {
+    if (product && product.images.length > 0) {
+      setActiveImage(product.images[0])
+    }
+  }, [product])
+
+  const choseActive = (img: string) => {
+    setActiveImage(img)
+  }
+
+  const next = () => {
+    if (currentIndexImages[1] < (product as Product).images.length) {
+      setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
+    }
+  }
+
+  const back = () => {
+    if (currentIndexImages[0] > 0) {
+      setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
+    }
+  }
+
+  const handleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const image = imgRef.current as HTMLImageElement
+    const { naturalHeight, naturalWidth } = image
+    const { offsetX, offsetY } = e.nativeEvent
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+
+  const handleRemoveZoom = () => {
+    imgRef.current?.removeAttribute('style')
+  }
+
+  if (!product) return null
 
   return (
     <>
       <div className='product-item-container'>
         <div className='product-item-left'>
-          <div className='product-img-main'>
-            <img src='https://down-vn.img.susercontent.com/file/sg-11134201-7qvcu-limt0f7rewhs19' alt='cc' />
+          <div className='product-img-main' onMouseLeave={handleRemoveZoom} onMouseMove={handleZoom}>
+            <img ref={imgRef} src={activeImage} alt={product?.name} />
           </div>
           <div className='product-img-slider'>
-            {images.map((img, index) => {
+            <div className='back' onClick={() => back()}>
+              <IoIosArrowBack />
+            </div>
+            {currentImages.map((img, index) => {
               return (
                 <>
-                  <div className='product-img-slider-item' key={index}>
+                  <div className='product-img-slider-item' key={index} onMouseEnter={() => choseActive(img)}>
                     <img src={img} />
                   </div>
                 </>
               )
             })}
+            <div className='next' onClick={() => next()}>
+              <IoIosArrowForward />
+            </div>
           </div>
           <div className='product-social'>
             <div className='social'>
@@ -116,33 +180,33 @@ const ProductItem = () => {
             </div>
             <div>|</div>
             <div className='favorite'>
-              <CiHeart size={34} style={{ color: 'pink' }} /> Đã thích(69)
+              <CiHeart size={34} style={{ color: 'pink' }} /> Đã thích({formatNumberToSocialStyle(product.view)})
             </div>
           </div>
         </div>
         <div className='product-item-right'>
-          <div className='product-name'>
-            Youtang Áo Khoác Chống Nắng Có Mũ Trùm Đầu Thoáng Khí Chống Tia UV Phù Hợp Với Mùa Hè Cho Nam
-          </div>
+          <div className='product-name'>{product?.name}</div>
           <div className='product-feedback'>
             <div className='product-rate'>
               <div className='product-rating'>
-                {5}
-                <ProductRating rating={5} />
+                {product?.rating}
+                <ProductRating rating={product?.rating} />
               </div>
               <div className='product-evalue'>{69} Đánh giá</div>
-              <div className='product-sold'>{6996} Đã bán</div>
+              <div className='product-sold'>{formatNumberToSocialStyle(product?.sold)} Đã bán</div>
             </div>
             <div className='repot'>Tố Cáo</div>
           </div>
           <div className='product-price'>
             <div className='price-old'>
-              <sup>đ</sup>185.000
+              <sup>đ</sup>
+              {formatCurrency(product.price_before_discount)}
             </div>
             <div className='price-new'>
-              <sup>đ</sup>102.000
+              <sup>đ</sup>
+              {formatCurrency(product.price)}
             </div>
-            <div className='price-discount'>45% Giảm</div>
+            <div className='price-discount'>{caculateDiscount(product.price_before_discount, product.price)}% Giảm</div>
           </div>
           <div className='product-refund'>
             Chính Sách Trả Hàng:{' '}
@@ -192,7 +256,7 @@ const ProductItem = () => {
                 <button>+</button>
               </div>
               <div>
-                6969 Sản Phẩm Có Sẵn<nav></nav>
+                {product.quantity} Sản Phẩm Có Sẵn<nav></nav>
               </div>
             </div>
           </div>
@@ -252,59 +316,10 @@ const ProductItem = () => {
         <div className='des-left'>
           <div className='des-detail'>
             <div className='title'>Mô tả sản phẩm</div>
-            <div style={{ fontSize: '17px', marginTop: '15px' }}>
-              Áo Khoác Dù Nam Nữ In Nổi Chữ SUPREME Nổi Đẹp Form Rộng Chất Vải Thoáng Mát Có Bo Chun Xịn HIện Cá Tính
-              Hàng Hot Trend-HTM FASHION
-              <br />
-              <br />
-              ✔ Thiết kế thời trang, đơn giản không kém phần hiện đại
-              <br />
-              <br />
-              ✔ Chất liệu vải Dù cao cấp: mềm mịn, co giản thoái mái, mang lại sử trẻ trung
-              <br />
-              <br />
-              ✔ Kiểu dáng gọn nhẹ, năng động
-              <br />
-              <br />
-              ✔ Kiểu dáng trẻ trung, cảm giác thoải mái
-              <br />
-              <br />
-              ✔ Đường may sắc sảo tinh tế
-              <br />
-              <br />
-              ✔ Phù hợp nhiều hoàn cảnh: dự tiệc, đi chơi, du lịch...
-              <br />
-              <br />
-              ✔ Xuất xứ: Việt Nam
-              <br />
-              <br />
-              ✔ HƯỚNG DẪN SIZE:
-              <br />
-              <br />
-              ✔ Size M: 40-50KG
-              <br />
-              <br />
-              ✔ Size L: 50-60KG
-              <br />
-              <br />
-              ✔ Size XL: 60-70KG
-              <br />
-              <br />
-              ✔ HƯỚNG DẪN BẢO QUẢN
-              <br />
-              <br />
-              ✔ Giặt ở nhiệt độ bình thường, với đồ có màu tương tự
-              <br />
-              <br />
-              ✔ Hạn chế sử dụng máy sấy và ủi ở nhiệt độ thích hợp
-              <br />
-              <br />
-              ✔ Nếu giặt máy thì hình in có thể sẽ tróc theo thời gian, không dùng hóa chất tẩy mạnh
-              <br />
-              <br />
-              ✔ CAM KẾT KHÁCH HÀNG
-              <br />
-            </div>
+            <div
+              style={{ fontSize: '17px', marginTop: '15px' }}
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            ></div>
           </div>
           <div className='des-comment'>
             <div className='title'>Đánh Giá Sản Phẩm</div>
@@ -333,7 +348,7 @@ const ProductItem = () => {
                   <img src='data:image/jpeg;base64,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' />
                 </div>
                 <div className='comment'>
-                  <div className='user'>Nhật Duy</div>
+                  <div className='user'>Thầy giáo TOKUDA</div>
                   <ProductRating rating={5} />
                   <div>2024-01-15 12:27 | Phân loại hàng: Đen,XL</div>
                   <div>Màu sắc: Xanh Blue</div>
@@ -349,7 +364,7 @@ const ProductItem = () => {
                   <img src='data:image/jpeg;base64,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' />
                 </div>
                 <div className='comment'>
-                  <div className='user'>Nhật Duy</div>
+                  <div className='user'>Ông Nội TOKUDA</div>
                   <ProductRating rating={5} />
                   <div>2024-01-15 12:27 | Phân loại hàng: Đen,XL</div>
                   <div>Màu sắc: Xanh Blue</div>
@@ -365,7 +380,7 @@ const ProductItem = () => {
                   <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4JWdrzCwY2owucPdunvUNiBWZBV3n7KYRA&s' />
                 </div>
                 <div className='comment'>
-                  <div className='user'>Nhật Duy</div>
+                  <div className='user'>Trung Tá TOKUDA</div>
                   <ProductRating rating={5} />
                   <div>2024-01-15 12:27 | Phân loại hàng: Đen,XL</div>
                   <div>Màu sắc: Xanh Blue</div>
