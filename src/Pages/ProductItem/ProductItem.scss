@@ -265,3 +265,200 @@
     }
   }
 }
+
+.product-des {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  gap: 10px;
+  margin: 0 200px;
+  margin-top: 15px;
+  .des-left {
+    height: fit-content;
+    background-color: #f5f5f5f5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .des-detail {
+      padding: 15px;
+      background-color: white;
+      .title {
+        height: 45px;
+        background-color: #f5f5f5f5;
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        padding-left: 15px;
+      }
+    }
+    .des-comment {
+      height: fit-content;
+      background-color: white;
+      padding: 15px;
+      .title {
+        font-size: 25px;
+        margin-bottom: 15px;
+      }
+      .rate {
+        display: flex;
+        gap: 20px;
+        padding: 30px 0;
+        background-color: #fef6f5;
+        border: 1px solid #dddddd;
+        .rate-star {
+          display: flex;
+          flex-direction: column;
+          color: var(--main-cloor);
+          font-size: 20px;
+          margin-left: 20px;
+          span {
+            font-size: 30px;
+          }
+        }
+        .rate-comment {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          button {
+            border: 1px solid #dddddd;
+            background-color: white;
+            padding: 5px 15px;
+            &:nth-child(1) {
+              color: var(--main-cloor);
+              border: 1px solid var(--main-cloor);
+            }
+          }
+        }
+      }
+    }
+    .product-other-container {
+      // padding: 15px;
+      // background-color: red;
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      .product-item {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border: 1px solid #dddddd;
+        gap: 15px;
+        &:hover {
+          border: 1px solid var(--main-cloor);
+        }
+        .product-img {
+          height: 100%;
+          width: 100%;
+          img {
+            height: 100%;
+            width: 100%;
+          }
+        }
+        .product-desc {
+          width: fit-content;
+          padding: 0 10px;
+          p {
+            margin: 0;
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+        .product-price {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px;
+          .price {
+            color: var(--main-cloor);
+            font-size: 20px;
+          }
+        }
+      }
+    }
+    .comment-container {
+      margin-top: 15px;
+      .comment-detail {
+        display: flex;
+        gap: 20px;
+        .avatar {
+          overflow: hidden;
+          height: 50px;
+          width: 50px;
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+        }
+        .comment {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+      .comment-paginate {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        justify-content: center;
+        button {
+          border: none;
+          background-color: transparent;
+          font-size: 22px;
+          color: rgba(0, 0, 0, 0.4);
+          padding: 0px 15px;
+          border-radius: 4px;
+          &:nth-child(2) {
+            background-color: var(--main-cloor);
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  .des-right {
+    height: fit-content;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    .title {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+    .product-oustanding {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid #dddddd;
+      padding: 15px 15px;
+      .product-img {
+        width: fit-content;
+        height: fit-content;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .product-descript {
+        width: fit-content;
+        margin: 10px 0;
+        p {
+          margin: 0;
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      .product-price {
+        color: var(--main-cloor);
+        font-size: 18px;
+      }
+    }
+  }
+}

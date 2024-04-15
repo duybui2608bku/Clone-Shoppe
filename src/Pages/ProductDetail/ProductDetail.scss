@@ -43,6 +43,7 @@
       gap: 10px;
       flex: 1;
       .product-item-container {
+        margin-left: 0px;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 10px;
