@@ -4,10 +4,18 @@ import './Cart.scss'
 import { BsTicketPerforated } from 'react-icons/bs'
 import { purchasesStatus } from '../../constants/purchase'
 import purchaseApi from '../../Services/Purchase.api'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../Context/App.context'
 import { formatCurrency } from '../../Utils/Utils'
-import { toast } from 'react-toastify'
+import ButtonShoppe from '../../Components/ButtonShoppe/ButtonShoppe'
+import { Purchase } from '../../Types/Purchase.type'
+import { produce } from 'immer'
+
+interface ExtendePurchase extends Purchase {
+  disable: boolean
+  checked: boolean
+}
+
 const Cart = () => {
   const { isAuthenticated } = useContext(AppContext)
   const { data } = useQuery({
@@ -15,14 +23,47 @@ const Cart = () => {
     queryFn: () => purchaseApi.getPurchaseList({ status: purchasesStatus.inCart }),
     enabled: isAuthenticated
   })
-
   const Cart = data?.data.data
+
+  const [extenedPurchase, setExtenedPurchase] = useState<ExtendePurchase[]>([])
+  const isAllChecked = extenedPurchase.every((purchase) => purchase.checked)
+  useEffect(() => {
+    if (Cart) {
+      setExtenedPurchase(
+        Cart.map((purchase) => ({
+          ...purchase,
+          disable: false,
+          checked: false
+        }))
+      )
+    }
+  }, [Cart])
+
+  console.log(extenedPurchase)
+
+  const handleChecked = (productIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExtenedPurchase(
+      produce((draft) => {
+        draft[productIndex].checked = event.target.checked
+      })
+    )
+  }
 
   const [byCount, setByCount] = useState<number>()
   const handleBuyCount = (value: number) => {
     setByCount(value)
   }
-  if (!Cart) return null
+
+  const checkAll = () => {
+    setExtenedPurchase((prev) =>
+      prev.map((product) => {
+        return {
+          ...product,
+          checked: !isAllChecked
+        }
+      })
+    )
+  }
 
   return (
     <>
@@ -37,7 +78,7 @@ const Cart = () => {
         </div>
         <div className='cart-description'>
           <div className='cart-product'>
-            <input type='checkbox' />
+            <input type='checkbox' onChange={checkAll} checked={isAllChecked} />
             <div>Sản Phẩm</div>
           </div>
           <div className='cart-quantity'>
@@ -47,13 +88,13 @@ const Cart = () => {
             <div>Thao Tác</div>
           </div>
         </div>
-        {Cart.map((product) => {
+        {extenedPurchase.map((product, index) => {
           return (
             <>
               <div key={product._id} className='cart-item-container'>
                 <div className='cart-item'>
                   <div className='cart-item-left'>
-                    <input type='checkbox' />
+                    <input type='checkbox' checked={product.checked} onChange={handleChecked(index)} />
                     <div className='cart-img'>
                       <img src={product.product.image} />
                     </div>
@@ -66,9 +107,10 @@ const Cart = () => {
                     <div>
                       <QuantityController
                         value={byCount ? byCount : product.buy_count}
-                        onDecrease={() => handleBuyCount(product.buy_count)}
-                        onIncrease={() => handleBuyCount(product.buy_count)}
-                        onType={() => handleBuyCount(product.buy_count)}
+                        onDecrease={handleBuyCount}
+                        onIncrease={handleBuyCount}
+                        onType={handleBuyCount}
+                        max={product.product.quantity}
                       />
                     </div>
                     <div>đ {formatCurrency(product.buy_count * product.price)}</div>
@@ -94,6 +136,26 @@ const Cart = () => {
             </>
           )
         })}
+        <div className='cart-footer'>
+          <div className='content-top'>
+            <div className='icon'>
+              <BsTicketPerforated color='#ee4d2d' size={24} /> Shoope VouCher
+            </div>
+            <div style={{ color: 'blue' }}>Chọn hoặc nhập mã</div>
+          </div>
+          <div className='content-bottom'>
+            <div className='content-left'>
+              <input onChange={checkAll} type='checkbox' checked={isAllChecked} />
+              <div onClick={checkAll}>Chọn tất cả ({extenedPurchase.length})</div>
+              <div>Xóa</div>
+            </div>
+            <div className='content-right'>
+              <div>Tổng thanh toán(0 Sản phẩm) :</div>
+              <div className='price'>100.000Đ</div>
+              <ButtonShoppe title='Mua Hàng' />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )
