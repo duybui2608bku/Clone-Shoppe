@@ -10,6 +10,7 @@ import { AppContext } from './Context/App.context'
 import ProductDetail from './Pages/ProductDetail/ProductDetail'
 import ProductItem from './Pages/ProductItem/ProductItem'
 import path from './constants/path'
+import Cart from './Pages/Cart/Cart'
 
 const useRouterElement = () => {
   const ProtectedRoute = () => {
@@ -44,6 +45,14 @@ const useRouterElement = () => {
           element: (
             <MainLayOut>
               <Profile />
+            </MainLayOut>
+          )
+        },
+        {
+          path: 'cart',
+          element: (
+            <MainLayOut>
+              <Cart />
             </MainLayOut>
           )
         }

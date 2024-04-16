@@ -6,6 +6,8 @@ import { useMutation } from '@tanstack/react-query'
 import { postLogOut } from '../../Services/LogInLogOut.api'
 import { useContext } from 'react'
 import { AppContext } from '../../Context/App.context'
+import { queryClient } from '../../main'
+import { purchasesStatus } from '../../constants/purchase'
 
 const PopoverAccount = () => {
   const { setIsAuthenticated, setProfile, profile } = useContext(AppContext)
@@ -16,6 +18,7 @@ const PopoverAccount = () => {
     onSuccess: (_) => {
       setIsAuthenticated(false)
       setProfile(null)
+      queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
     }
   })
 

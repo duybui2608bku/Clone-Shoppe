@@ -7,11 +7,17 @@ import { useQuery } from '@tanstack/react-query'
 import { purchasesStatus } from '../../constants/purchase'
 import purchaseApi from '../../Services/Purchase.api'
 import { formatCurrency } from '../../Utils/Utils'
+import { useContext } from 'react'
+import { AppContext } from '../../Context/App.context'
+import { Link } from 'react-router-dom'
+import path from '../../constants/path'
 
 const PopoverCart = () => {
+  const { isAuthenticated } = useContext(AppContext)
   const { data } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchaseList({ status: purchasesStatus.inCart })
+    queryFn: () => purchaseApi.getPurchaseList({ status: purchasesStatus.inCart }),
+    enabled: isAuthenticated
   })
 
   const Cart = data?.data.data
@@ -23,7 +29,7 @@ const PopoverCart = () => {
     <Popover className='popover-cart-container'>
       <Popover.Body className='popover-cart-content'>
         <div>Sản Phẩm Mới Thêm</div>
-        {Cart ? (
+        {Cart.length > 0 ? (
           <>
             {Cart?.slice(0, maxCartShow).map((item) => {
               return (
@@ -42,10 +48,14 @@ const PopoverCart = () => {
               )
             })}
             <div className='popover-cart-footer'>
-              <div>({totalCart > maxCartShow ? totalCart - maxCartShow : ''})Thêm Hàng Vào Giỏ</div>
-              <div>
+              {totalCart > maxCartShow ? (
+                <div>({totalCart > maxCartShow ? totalCart - maxCartShow : ''})Thêm Hàng Vào Giỏ</div>
+              ) : (
+                ''
+              )}
+              <Link to={path.cart}>
                 <ButtonShoppe title='Xem giỏ hàng' />
-              </div>
+              </Link>
             </div>
           </>
         ) : (

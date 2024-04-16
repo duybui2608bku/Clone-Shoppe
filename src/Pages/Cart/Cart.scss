@@ -1,0 +1,124 @@
+.cart-container {
+  background-color: var(--footer-color);
+  margin-top: 20px;
+  cursor: pointer;
+  .cart-freeship {
+    margin: 0 200px;
+    display: flex;
+    gap: 15px;
+    background-color: #fffefb;
+    border: 1px solid gold;
+    padding: 10px;
+    border-radius: 2px;
+  }
+  .cart-description {
+    padding: 15px 30px;
+    margin: 0 200px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    margin-top: 15px;
+    border-radius: 2px;
+    .cart-product {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      input {
+        transform: scale(1.5);
+        accent-color: var(--main-cloor);
+        cursor: pointer;
+      }
+    }
+    .cart-quantity {
+      width: 600px;
+      display: flex;
+      justify-content: space-between;
+      color: #888888;
+      div {
+        min-width: 100px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+  .cart-item-container {
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 200px;
+      padding: 15px 30px;
+      background-color: white;
+      margin-top: 15px;
+      //   margin-bottom: 20px;
+      .cart-item-left {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        .cart-name-product {
+          max-width: 200px;
+          p {
+            margin: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* Số dòng tối đa */
+            text-overflow: ellipsis;
+          }
+        }
+        .cart-img {
+          width: 70px;
+          height: 70px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        input {
+          transform: scale(1.5);
+          accent-color: var(--main-cloor);
+          cursor: pointer;
+        }
+      }
+      .cart-item-right {
+        width: 600px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        div {
+          min-width: 100px;
+          display: flex;
+          justify-content: center;
+          &:nth-child(3) {
+            color: var(--main-cloor);
+          }
+          &:nth-child(4) {
+            color: var(--main-cloor);
+          }
+        }
+      }
+    }
+  }
+  .cart-discount {
+    display: flex;
+    margin: 0 200px;
+    background-color: white;
+    padding: 20px 30px;
+    gap: 20px;
+    align-items: center;
+    .icon {
+      color: var(--main-cloor);
+      font-size: 20px;
+    }
+    div {
+      color: #0055aa;
+    }
+  }
+  .cart-transtion {
+    display: flex;
+    margin: 0 200px;
+    background-color: white;
+    padding: 20px 30px;
+    gap: 20px;
+    align-items: center;
+  }
+}

@@ -10,6 +10,9 @@ import ButtonShoppe from '../../Components/ButtonShoppe/ButtonShoppe'
 import { useContext } from 'react'
 import { AppContext } from '../../Context/App.context'
 import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
+import { useNavigate } from 'react-router-dom'
+import { generateNameId } from '../../Types/Utils.type'
+import path from '../../constants/path'
 
 const ProductList = () => {
   const images = [
@@ -136,6 +139,8 @@ const ProductList = () => {
     }
   ]
 
+  const nagivate = useNavigate()
+
   const { setIsProductsDetail } = useContext(AppContext)
 
   const caculateDiscount = (priceOld: number, priceNew: number): number => {
@@ -211,7 +216,14 @@ const ProductList = () => {
           {data?.data.data.products.map((products, index) => {
             return (
               <>
-                <div key={index} className='products-item'>
+                <div
+                  onClick={() => {
+                    setIsProductsDetail(true)
+                    nagivate(`${path.home}${generateNameId({ name: products.name, id: products._id })}`)
+                  }}
+                  key={index}
+                  className='products-item'
+                >
                   <div className='products-image'>
                     <img src={products.image} />
                   </div>

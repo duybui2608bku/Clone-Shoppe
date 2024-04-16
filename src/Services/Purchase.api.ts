@@ -12,6 +12,17 @@ const purchaseApi = {
     return axiosInstance.get<SuccessResponse<Purchase[]>>(`${URL}`, {
       params
     })
+  },
+  buyProducts(body: { product_id: string; buy_count: number }[]) {
+    return axiosInstance.post<SuccessResponse<Purchase[]>>(`${URL}/buy-products`, body)
+  },
+  updateProducts(body: { product_id: string; buy_count: number }) {
+    return axiosInstance.put<SuccessResponse<Purchase>>(`${URL}/update-purchase`, body)
+  },
+  deleteProducts(purchaseIds: string[]) {
+    return axiosInstance.delete<SuccessResponse<{ deleted_count: number }>>(`${URL}`, {
+      data: purchaseIds
+    })
   }
 }
 
