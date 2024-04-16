@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import productApi from '../../Services/Products.api'
 import { FaFacebookMessenger } from 'react-icons/fa'
@@ -22,6 +22,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product } from '../../Types/Product.type'
 import { getIdFromNameId } from '../../Types/Utils.type'
 import QuantityController from '../../Components/QuantityController/QuantityController'
+import purchaseApi from '../../Services/Purchase.api'
+import { queryClient } from '../../main'
+import { purchasesStatus } from '../../constants/purchase'
+import { toast } from 'react-toastify'
 
 const ProductItem = () => {
   const { nameId } = useParams()
@@ -92,7 +96,7 @@ const ProductItem = () => {
   ]
 
   const imgRef = useRef<HTMLImageElement>(null)
-  const [byCount, setByCount] = useState(1)
+  const [byCount, setByCount] = useState<number>(1)
   const handleBuyCount = (value: number) => {
     setByCount(value)
   }
@@ -133,6 +137,22 @@ const ProductItem = () => {
     if (currentIndexImages[0] > 0) {
       setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
     }
+  }
+
+  const addToCartMutation = useMutation({
+    mutationFn: (body: { buy_count: number; product_id: string }) => purchaseApi.addToCart(body)
+  })
+
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { buy_count: byCount, product_id: product?._id as string },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+          toast.success('Thêm vào giỏ hàng thành công!')
+        }
+      }
+    )
   }
 
   const handleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -268,7 +288,7 @@ const ProductItem = () => {
             </div>
           </div>
           <div className='product-purchase'>
-            <button>
+            <button onClick={addToCart}>
               <BsCartPlus /> Thêm vào giỏ hàng
             </button>
             <ButtonShoppe title='Mua Ngay' />

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css' // Import CSS của ToastContaine
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { AppProvider } from './Context/App.context.tsx'
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false

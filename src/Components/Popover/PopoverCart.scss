@@ -1,13 +1,19 @@
 .popover-cart-container {
-  min-width: 350px;
+  cursor: pointer;
+  min-width: 400px;
   .popover-cart-content {
     .cart-item {
       display: flex;
       flex-direction: row;
       gap: 15px;
+      margin-bottom: 10px;
+      &:hover {
+        background-color: #dddddd;
+        transition: 0.5s;
+      }
       .cart-image {
-        width: 100px;
-        height: 50px;
+        max-width: 50px;
+        max-height: 50px;
         img {
           width: 100%;
           height: 100%;
@@ -17,6 +23,19 @@
         color: var(--main-cloor);
         font-size: 17px;
       }
+      .cart-title {
+        p {
+          margin: 0;
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+    .no-cart {
+      width: 100px;
+      height: 100px;
     }
   }
 }
