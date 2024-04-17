@@ -7,8 +7,9 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   onIncrease?: (value: number) => void
   onDecrease?: (value: number) => void
   onType?: (value: number) => void
+  onFocusOut?: (value: number) => void
 }
-const QuantityController = ({ max, onDecrease, onIncrease, onType, value, ...rest }: Props) => {
+const QuantityController = ({ max, onDecrease, onIncrease, onType, onFocusOut, value, ...rest }: Props) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
     if (max !== undefined && _value > max) {
@@ -35,12 +36,17 @@ const QuantityController = ({ max, onDecrease, onIncrease, onType, value, ...res
     onIncrease && onIncrease(_value)
   }
 
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut && onFocusOut(Number(event.target.value))
+  }
+
   return (
     <>
       <div className='quantity-controller'>
         <button onClick={decrease}>-</button>
         <InputNumber
           onChange={handleChange}
+          onBlur={handleBlur}
           {...rest}
           value={value}
           style={{ width: '50px', border: '1px solid #dddddd', outline: 'none', padding: '5px', textAlign: 'center' }}

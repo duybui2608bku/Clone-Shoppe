@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import QuantityController from '../../Components/QuantityController/QuantityController'
 import './Cart.scss'
 import { BsTicketPerforated } from 'react-icons/bs'
@@ -10,6 +10,7 @@ import { formatCurrency } from '../../Utils/Utils'
 import ButtonShoppe from '../../Components/ButtonShoppe/ButtonShoppe'
 import { Purchase } from '../../Types/Purchase.type'
 import { produce } from 'immer'
+import { keyBy } from 'lodash'
 
 interface ExtendePurchase extends Purchase {
   disable: boolean
@@ -18,28 +19,43 @@ interface ExtendePurchase extends Purchase {
 
 const Cart = () => {
   const { isAuthenticated } = useContext(AppContext)
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchaseList({ status: purchasesStatus.inCart }),
     enabled: isAuthenticated
   })
+
+  const updatePurchaseMutation = useMutation({
+    mutationFn: purchaseApi.updateProducts,
+    onSuccess: (_) => {
+      refetch()
+    }
+  })
   const Cart = data?.data.data
+  let totalPrice = 0
 
   const [extenedPurchase, setExtenedPurchase] = useState<ExtendePurchase[]>([])
   const isAllChecked = extenedPurchase.every((purchase) => purchase.checked)
+  let totalChecked = 0
+  for (let i = 0; i < extenedPurchase.length; i++) {
+    if (extenedPurchase[i].checked) {
+      totalChecked++
+    }
+  }
   useEffect(() => {
     if (Cart) {
-      setExtenedPurchase(
-        Cart.map((purchase) => ({
-          ...purchase,
-          disable: false,
-          checked: false
-        }))
-      )
+      setExtenedPurchase((prev) => {
+        const extendedPurchaseObject = keyBy(prev, '_id')
+        return (
+          Cart.map((purchase) => ({
+            ...purchase,
+            disable: false,
+            checked: Boolean(extendedPurchaseObject[purchase._id]?.checked)
+          })) || []
+        )
+      })
     }
   }, [Cart])
-
-  console.log(extenedPurchase)
 
   const handleChecked = (productIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setExtenedPurchase(
@@ -49,11 +65,6 @@ const Cart = () => {
     )
   }
 
-  const [byCount, setByCount] = useState<number>()
-  const handleBuyCount = (value: number) => {
-    setByCount(value)
-  }
-
   const checkAll = () => {
     setExtenedPurchase((prev) =>
       prev.map((product) => {
@@ -61,6 +72,27 @@ const Cart = () => {
           ...product,
           checked: !isAllChecked
         }
+      })
+    )
+  }
+
+  const handleQuantity = (productIndex: number, value: number, enable: boolean) => {
+    console.log(enable)
+    if (enable) {
+      setExtenedPurchase(
+        produce((draft) => {
+          draft[productIndex].disable = true
+        })
+      )
+      const purchase = extenedPurchase[productIndex]
+      updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+    }
+  }
+
+  const handleTypeQuantity = (productIndex: number) => (value: number) => {
+    setExtenedPurchase(
+      produce((draft) => {
+        draft[productIndex].buy_count = value
       })
     )
   }
@@ -89,6 +121,7 @@ const Cart = () => {
           </div>
         </div>
         {extenedPurchase.map((product, index) => {
+          totalPrice += product.price * product.buy_count
           return (
             <>
               <div key={product._id} className='cart-item-container'>
@@ -106,14 +139,24 @@ const Cart = () => {
                     <div>đ {formatCurrency(product.price)}</div>
                     <div>
                       <QuantityController
-                        value={byCount ? byCount : product.buy_count}
-                        onDecrease={handleBuyCount}
-                        onIncrease={handleBuyCount}
-                        onType={handleBuyCount}
+                        value={product.buy_count}
                         max={product.product.quantity}
+                        onIncrease={(value) => handleQuantity(index, value, value <= product.product.quantity)}
+                        onDecrease={(value) => handleQuantity(index, value, value >= 1)}
+                        onFocusOut={(value) =>
+                          handleQuantity(
+                            index,
+                            value,
+                            value >= 1 &&
+                              value <= product.product.quantity &&
+                              (Cart as Purchase[])[index].buy_count != value
+                          )
+                        }
+                        disabled={product.disable}
+                        onType={handleTypeQuantity(index)}
                       />
                     </div>
-                    <div>đ {formatCurrency(product.buy_count * product.price)}</div>
+                    <div>đ {formatCurrency(product.price * product.buy_count)}</div>
                     <div>Xóa</div>
                   </div>
                 </div>
@@ -150,8 +193,8 @@ const Cart = () => {
               <div>Xóa</div>
             </div>
             <div className='content-right'>
-              <div>Tổng thanh toán(0 Sản phẩm) :</div>
-              <div className='price'>100.000Đ</div>
+              <div>Tổng thanh toán({totalChecked} Sản phẩm) :</div>
+              <div className='price'>{formatCurrency(totalPrice)}</div>
               <ButtonShoppe title='Mua Hàng' />
             </div>
           </div>
