@@ -9,6 +9,7 @@ interface AppContext {
   setProfile: React.Dispatch<React.SetStateAction<User | null>>
   isProductsDetail: boolean
   setIsProductsDetail: React.Dispatch<React.SetStateAction<boolean>>
+  reset: () => void
 }
 
 const initialAppContext: AppContext = {
@@ -17,7 +18,8 @@ const initialAppContext: AppContext = {
   profile: getProfileFromLS(),
   setProfile: () => null,
   isProductsDetail: false,
-  setIsProductsDetail: () => null
+  setIsProductsDetail: () => null,
+  reset: () => null
 }
 
 export const AppContext = createContext<AppContext>(initialAppContext)
@@ -26,6 +28,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile)
   const [isProductsDetail, setIsProductsDetail] = useState<boolean>(initialAppContext.isProductsDetail)
+  const reset = () => {
+    setIsAuthenticated(false)
+    setProfile(null)
+    setIsProductsDetail(false)
+  }
   return (
     <AppContext.Provider
       value={{
@@ -34,7 +41,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         profile,
         setProfile,
         isProductsDetail,
-        setIsProductsDetail
+        setIsProductsDetail,
+        reset
       }}
     >
       {children}

@@ -2,11 +2,13 @@ type ButtonShoppeProps = {
   title?: string
   backGround?: string
   colorText?: string
+  disable?: boolean
 }
 
-const ButtonShoppe: React.FC<ButtonShoppeProps> = ({ title, backGround, colorText }) => {
+const ButtonShoppe: React.FC<ButtonShoppeProps> = ({ title, backGround, colorText, disable }) => {
   return (
     <button
+      disabled={disable}
       style={{
         backgroundColor: backGround ? backGround : '#ee4d2d',
         border: 'none',

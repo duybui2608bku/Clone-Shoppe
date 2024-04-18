@@ -2,14 +2,15 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import { Link } from 'react-router-dom'
 import './PopoverAccount.scss'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { postLogOut } from '../../Services/LogInLogOut.api'
 import { useContext } from 'react'
 import { AppContext } from '../../Context/App.context'
-import { queryClient } from '../../main'
+// import { queryClient } from '../../main'
 import { purchasesStatus } from '../../constants/purchase'
 
 const PopoverAccount = () => {
+  const queryClient = useQueryClient()
   const { setIsAuthenticated, setProfile, profile } = useContext(AppContext)
   const logOutMutation = useMutation({
     mutationFn: (_) => {

@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate, useParams } from 'react-router-dom'
 import productApi from '../../Services/Products.api'
 import { FaFacebookMessenger } from 'react-icons/fa'
 import { FaFacebook } from 'react-icons/fa'
@@ -23,9 +23,10 @@ import { Product } from '../../Types/Product.type'
 import { getIdFromNameId } from '../../Types/Utils.type'
 import QuantityController from '../../Components/QuantityController/QuantityController'
 import purchaseApi from '../../Services/Purchase.api'
-import { queryClient } from '../../main'
+// import { queryClient } from '../../main'
 import { purchasesStatus } from '../../constants/purchase'
 import { toast } from 'react-toastify'
+import path from '../../constants/path'
 
 const ProductItem = () => {
   const { nameId } = useParams()
@@ -97,6 +98,7 @@ const ProductItem = () => {
 
   const imgRef = useRef<HTMLImageElement>(null)
   const [byCount, setByCount] = useState<number>(1)
+  const nagivate = useNavigate()
   const handleBuyCount = (value: number) => {
     setByCount(value)
   }
@@ -143,6 +145,7 @@ const ProductItem = () => {
     mutationFn: (body: { buy_count: number; product_id: string }) => purchaseApi.addToCart(body)
   })
 
+  const queryClient = useQueryClient()
   const addToCart = () => {
     addToCartMutation.mutate(
       { buy_count: byCount, product_id: product?._id as string },
@@ -150,6 +153,22 @@ const ProductItem = () => {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
           toast.success('Thêm vào giỏ hàng thành công!')
+        }
+      }
+    )
+  }
+
+  const buyNow = () => {
+    addToCartMutation.mutate(
+      { buy_count: byCount, product_id: product?._id as string },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+          nagivate(path.cart, {
+            state: {
+              purchaseId: product?._id
+            }
+          })
         }
       }
     )
@@ -291,7 +310,9 @@ const ProductItem = () => {
             <button onClick={addToCart}>
               <BsCartPlus /> Thêm vào giỏ hàng
             </button>
-            <ButtonShoppe title='Mua Ngay' />
+            <span onClick={buyNow}>
+              <ButtonShoppe title='Mua Ngay' />
+            </span>
           </div>
         </div>
       </div>

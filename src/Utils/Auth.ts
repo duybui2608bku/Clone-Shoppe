@@ -4,8 +4,13 @@ export const saveAccessTokenToLS = (access_token: string) => {
   return localStorage.setItem('access_token', access_token)
 }
 
+export const LocalStorageEventTarget = new EventTarget()
+
 export const clearLS = () => {
-  return localStorage.removeItem('access_token')
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('profile')
+  const clearLSEvent = new Event('')
+  LocalStorageEventTarget.dispatchEvent()
 }
 
 export const getAccessTokenFormLS = () => {

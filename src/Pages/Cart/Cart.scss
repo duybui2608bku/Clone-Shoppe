@@ -88,6 +88,10 @@
           min-width: 100px;
           display: flex;
           justify-content: center;
+          // &:nth-child(1) {
+          //   display: flex;
+          //   flex-direction: column;
+          // }
           &:nth-child(3) {
             color: var(--main-cloor);
           }
@@ -164,10 +168,29 @@
         gap: 20px;
         font-size: 18px;
         .price {
-          color: var(--main-cloor);
-          font-size: 25px;
+          :nth-child(1) {
+            color: var(--main-cloor);
+            font-size: 25px;
+          }
+          display: flex;
+          flex-direction: column;
+          :nth-child(2) {
+            font-size: 14px;
+          }
         }
       }
     }
+  }
+}
+.no-cart {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  img {
+    width: 300px;
+    height: auto;
   }
 }
