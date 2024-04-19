@@ -36,7 +36,7 @@ const Register = () => {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
       onSuccess: (_) => {
-        toast('Đăng kí thành công, mời đăng nhập')
+        toast.success('Đăng kí thành công, mời đăng nhập')
         navigate('/login')
       },
       onError: (errors: any) => {

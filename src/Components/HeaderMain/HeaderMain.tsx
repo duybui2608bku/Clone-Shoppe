@@ -18,7 +18,8 @@ import path from '../../constants/path'
 import { omit } from 'lodash'
 const HeaderMain = () => {
   const [language, setLanguage] = useState<Boolean>(true)
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, profile } = useContext(AppContext)
+  console.log(profile)
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
   const { register, handleSubmit } = useForm({
@@ -79,7 +80,14 @@ const HeaderMain = () => {
           </Link>
           {isAuthenticated ? (
             <Link className='a' to={'/'}>
-              <VscAccount /> <PopoverAccount />
+              {profile?.avatar ? (
+                <div>
+                  <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4JWdrzCwY2owucPdunvUNiBWZBV3n7KYRA&s' />
+                </div>
+              ) : (
+                <VscAccount />
+              )}{' '}
+              <PopoverAccount />
             </Link>
           ) : (
             <>
