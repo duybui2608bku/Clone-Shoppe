@@ -1,0 +1,64 @@
+.proflie-container {
+  background-color: white;
+  padding: 15px;
+  .infor {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    .infor-left {
+      width: fit-content;
+      div {
+        height: 50px;
+      }
+    }
+    .infor-right {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      div {
+        height: 50px;
+        input {
+          width: 100%;
+          outline: none;
+          border: 1px solid #dddddd;
+        }
+      }
+      .selected {
+        display: flex;
+        justify-content: space-between;
+        .selected-item {
+          width: 130px;
+          height: 30px;
+          border: 1px solid #dddddd;
+          outline: none;
+          &:hover {
+            border: 1px solid var(--main-cloor);
+          }
+        }
+      }
+    }
+    .avatar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      .img {
+        height: 100px;
+        width: 100px;
+        overflow: hidden;
+        border-radius: 50%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .button {
+        button {
+          border: 1px solid #dddddd;
+          padding: 10px 30px;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}

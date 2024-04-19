@@ -1,0 +1,9 @@
+.user-layout {
+  margin: 15px 200px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  .a {
+    flex: 1;
+  }
+}

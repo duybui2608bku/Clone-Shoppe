@@ -22,7 +22,7 @@ const purchaseApi = {
   deleteProducts(purchaseIds: string[]) {
     return axiosInstance.delete<SuccessResponse<{ deleted_count: number }>>(`${URL}`, {
       data: purchaseIds
-    })
+    })  
   }
 }
 

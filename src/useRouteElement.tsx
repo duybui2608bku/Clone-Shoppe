@@ -4,13 +4,16 @@ import Login from './Pages/Login/Login'
 import Register from './Pages/Register/Register'
 import RegisterLayout from './Layout/RegisterLayout/RegisterLayout'
 import MainLayOut from './Layout/MainLayout/MainLayout'
-import Profile from './Pages/Profile/Profile'
+import Profile from './Pages/User/Pages/Profile/Profile'
 import { useContext } from 'react'
 import { AppContext } from './Context/App.context'
 import ProductDetail from './Pages/ProductDetail/ProductDetail'
 import ProductItem from './Pages/ProductItem/ProductItem'
 import path from './constants/path'
 import Cart from './Pages/Cart/Cart'
+import UseLayout from './Pages/User/Layout/UserLayout/UseLayout'
+import ChangePassword from './Pages/User/Pages/ChangePassword/ChangePaword'
+import HistoryPurchase from './Pages/User/Pages/HistoryPurchase/HistoryPurchase'
 
 const useRouterElement = () => {
   const ProtectedRoute = () => {
@@ -53,6 +56,36 @@ const useRouterElement = () => {
           element: (
             <MainLayOut>
               <Cart />
+            </MainLayOut>
+          )
+        },
+        {
+          path: path.profile,
+          element: (
+            <MainLayOut>
+              <UseLayout>
+                <Profile />
+              </UseLayout>
+            </MainLayOut>
+          )
+        },
+        {
+          path: path.changePassword,
+          element: (
+            <MainLayOut>
+              <UseLayout>
+                <ChangePassword />
+              </UseLayout>
+            </MainLayOut>
+          )
+        },
+        {
+          path: path.historyPurchase,
+          element: (
+            <MainLayOut>
+              <UseLayout>
+                <HistoryPurchase />
+              </UseLayout>
             </MainLayOut>
           )
         }

@@ -8,6 +8,7 @@ import { useContext } from 'react'
 import { AppContext } from '../../Context/App.context'
 // import { queryClient } from '../../main'
 import { purchasesStatus } from '../../constants/purchase'
+import path from '../../constants/path'
 
 const PopoverAccount = () => {
   const queryClient = useQueryClient()
@@ -30,7 +31,7 @@ const PopoverAccount = () => {
   const popover = (
     <Popover className='popover-header-container'>
       <Popover.Body className='popover-header-content'>
-        <Link className='a' to='/profile'>
+        <Link className='a' to={path.profile}>
           Tài Khoản Của Tôi
         </Link>
         <Link className='a' to='/'>
