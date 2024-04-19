@@ -16,10 +16,12 @@ import useQueryConfig from '../../Hooks/useQueryConfig'
 import { useForm } from 'react-hook-form'
 import path from '../../constants/path'
 import { omit } from 'lodash'
+import { getAvatar } from '../../Types/Utils.type'
 const HeaderMain = () => {
   const [language, setLanguage] = useState<Boolean>(true)
   const { isAuthenticated, setIsAuthenticated, profile } = useContext(AppContext)
-  console.log(profile)
+  console.log(profile?.avatar)
+
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
   const { register, handleSubmit } = useForm({
@@ -27,6 +29,7 @@ const HeaderMain = () => {
       name: ''
     }
   })
+  console.log(profile)
   const onSubmitSearch = handleSubmit((data) => {
     navigate({
       pathname: path.home,
@@ -81,8 +84,8 @@ const HeaderMain = () => {
           {isAuthenticated ? (
             <Link className='a' to={'/'}>
               {profile?.avatar ? (
-                <div>
-                  <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4JWdrzCwY2owucPdunvUNiBWZBV3n7KYRA&s' />
+                <div className='avatar'>
+                  <img src={getAvatar(profile.avatar)} />
                 </div>
               ) : (
                 <VscAccount />

@@ -1,3 +1,5 @@
+import config from '../constants/config'
+
 export interface SuccessResponse<Data> {
   mesage: string
   data: Data
@@ -20,3 +22,8 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i-')
   return arr[arr.length - 1]
 }
+
+export const getAvatar = (avataName?: string) =>
+  avataName
+    ? `${config.baseUrl}images/${avataName} `
+    : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4JWdrzCwY2owucPdunvUNiBWZBV3n7KYRA&s'

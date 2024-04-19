@@ -3,13 +3,20 @@ import { RiLockPasswordFill } from 'react-icons/ri'
 import { RiBillLine } from 'react-icons/ri'
 import { FaPen } from 'react-icons/fa'
 import './UserSideNav.scss'
+import { useContext } from 'react'
+import { AppContext } from '../../../../Context/App.context'
+import { getAvatar } from '../../../../Types/Utils.type'
+import { useLocation, useNavigate } from 'react-router-dom'
 const UserSideNav = () => {
+  const { profile } = useContext(AppContext)
+  const location = useLocation()
+  const nagivate = useNavigate()
   return (
     <>
       <div className='user-sidebar-container'>
         <div className='user-sidebar-avatar'>
           <div className='avatar'>
-            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4JWdrzCwY2owucPdunvUNiBWZBV3n7KYRA&s' />
+            <img src={getAvatar(profile?.avatar)} />
           </div>
           <div className='user-sidebar-infor'>
             <div className='name'>Duy BKU</div>
@@ -20,15 +27,17 @@ const UserSideNav = () => {
           </div>
         </div>
         <hr style={{ marginTop: '-15px' }}></hr>
-        <div className='user-sidebar-profile'>
+        <div onClick={() => nagivate('/user/profile')} className='user-sidebar-profile'>
           <CiUser color='blue' />
-          <span>Tài Khoản Của Tôi</span>
+          <span style={location.pathname === '/user/profile' ? { color: '#ee4d2d' } : {}}>Tài Khoản Của Tôi</span>
         </div>
-        <div className='user-sidebar-password'>
-          <RiLockPasswordFill /> <span>Đổi Mật Khẩu</span>
+        <div onClick={() => nagivate('/user/password')} className='user-sidebar-password'>
+          <RiLockPasswordFill />{' '}
+          <span style={location.pathname === '/user/password' ? { color: '#ee4d2d' } : {}}>Đổi Mật Khẩu</span>
         </div>
-        <div className='user-sidebar-purchase'>
-          <RiBillLine color='blue' /> <span>Đơn Mua</span>
+        <div onClick={() => nagivate('/user/purchase')} className='user-sidebar-purchase'>
+          <RiBillLine color='blue' />{' '}
+          <span style={location.pathname === '/user/purchase' ? { color: '#ee4d2d' } : {}}>Đơn Mua</span>
         </div>
       </div>
     </>

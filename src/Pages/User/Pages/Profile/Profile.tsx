@@ -4,12 +4,14 @@ import './Profile.scss'
 import UserApi, { BodyUpdateProfile } from '../.../../../../../Services/User.api'
 import { Controller, useForm } from 'react-hook-form'
 import { getRules } from '../../../../Utils/ruls'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import DateSelected from '../../Components/DateSelected/DateSelected'
 import { toast } from 'react-toastify'
 import { AppContext } from '../../../../Context/App.context'
 import { setProfileFromLS } from '../../../../Utils/Auth'
-interface FormData {
+import { getAvatar } from '../../../../Types/Utils.type'
+import config from '../../../../constants/config'
+interface FormDataUser {
   name: string
   phone: string
   address: string
@@ -17,10 +19,20 @@ interface FormData {
   date_of_birth: Date
 }
 const Profile = () => {
-  const { setProfile } = useContext(AppContext)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { setProfile, profile } = useContext(AppContext)
+  const [file, setFile] = useState<File>()
+  const previewImg = useMemo(() => {
+    return file ? URL.createObjectURL(file) : ''
+  }, [file])
   const { data, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: () => UserApi.getProfile()
+  })
+  const upLoadAvatarMuatation = useMutation({
+    mutationFn: (body: FormData) => {
+      return UserApi.upLoadAvatar(body)
+    }
   })
   const rules = getRules()
   const User = data?.data.data
@@ -31,7 +43,7 @@ const Profile = () => {
     formState: { errors },
     handleSubmit,
     setValue
-  } = useForm<FormData>({
+  } = useForm<FormDataUser>({
     defaultValues: {
       name: '',
       phone: '',
@@ -40,6 +52,8 @@ const Profile = () => {
       date_of_birth: new Date(1990, 1, 1)
     }
   })
+
+  const avatar = watch('avatar')
   useEffect(() => {
     if (User) {
       setValue('name', User.name || '')
@@ -56,16 +70,46 @@ const Profile = () => {
     }
   })
   const onSubmit = handleSubmit(async (data) => {
-    const res = await updateProfileMutation.mutateAsync({ ...data, date_of_birth: data.date_of_birth?.toISOString() })
-    refetch()
-    console.log(res.data.data)
-    setProfile(res.data.data)
-    setProfileFromLS(res.data.data)
-    toast('Cập Nhật Thành Công')
+    try {
+      let avatarName = avatar
+      if (file) {
+        const form = new FormData()
+        form.append('image', file)
+        const uploadRes = await upLoadAvatarMuatation.mutateAsync(form)
+        avatarName = uploadRes.data.data
+        setValue('avatar', avatarName)
+      }
+      const res = await updateProfileMutation.mutateAsync({
+        ...data,
+        date_of_birth: data.date_of_birth?.toISOString(),
+        roles: [],
+        email: '',
+        avatar: avatarName
+      })
+      refetch()
+      setProfile(res.data.data)
+      setProfileFromLS(res.data.data)
+      toast('Cập Nhật Thành Công')
+    } catch (error) {
+      console.log(error)
+    }
   })
 
-  const value = watch()
-  console.log(errors)
+  const handleUpload = () => {
+    fileInputRef.current?.click()
+  }
+
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileFromLocal = event.target.files?.[0]
+    if (
+      (fileFromLocal && fileFromLocal?.size >= config.maxSizeUploadAvatar) ||
+      !fileFromLocal?.type.includes('image')
+    ) {
+      toast.error('File không hợp lệ')
+    } else {
+      setFile(fileFromLocal)
+    }
+  }
 
   return (
     <>
@@ -128,11 +172,13 @@ const Profile = () => {
             </div>
             <div className='avatar'>
               <div className='img'>
-                <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4JWdrzCwY2owucPdunvUNiBWZBV3n7KYRA&s' />
+                <img src={previewImg || getAvatar(profile?.avatar)} />
               </div>
-              <input type='file' style={{ display: 'none' }} />
+              <input onChange={onFileChange} ref={fileInputRef} type='file' style={{ display: 'none' }} />
               <div className='button'>
-                <button type='button'>Chọn Ảnh</button>
+                <button onClick={handleUpload} type='button'>
+                  Chọn Ảnh
+                </button>
               </div>
               <div>
                 Dung Lượng File tối đa 1MB

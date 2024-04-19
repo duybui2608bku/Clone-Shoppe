@@ -1,0 +1,115 @@
+.history-purchase-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  .item {
+    text-decoration: none;
+    background-color: white;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+  .active {
+    border-bottom: 3px solid var(--main-cloor);
+  }
+}
+.history-purchase-item {
+  cursor: pointer;
+  margin-top: 20px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  .detail-purchase {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    padding: 15px;
+    .content-one {
+      display: flex;
+      justify-content: space-between;
+      .infor-shop {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        .left {
+          padding: 5px 20px;
+          background-color: var(--main-cloor);
+          color: white;
+          border: none;
+        }
+        .right {
+          padding: 5px 20px;
+          border: 1px solid #dddddd;
+        }
+      }
+      .transition {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+    }
+    .content-two {
+      margin-top: 15px;
+      display: flex;
+      gap: 20px;
+      .img {
+        height: 100px;
+        width: 100px;
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+      .price {
+        width: 200px;
+        display: flex;
+        gap: 45px;
+      }
+      .des {
+        flex: 1;
+      }
+    }
+    .content-three {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 15px;
+      .finale-price {
+        span {
+          font-size: 28px;
+          color: var(--main-cloor);
+        }
+      }
+      .button {
+        display: flex;
+        gap: 20px;
+        button {
+          padding: 0 30px;
+          border: 1px solid #dddddd;
+          background-color: white;
+        }
+      }
+    }
+  }
+}
+.img-no-purchase {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  gap: 20px;
+  .img {
+    height: 200px;
+    width: 200px;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
