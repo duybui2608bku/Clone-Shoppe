@@ -36,7 +36,7 @@ const Login = () => {
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess: (data) => {
-        toast('Đăng nhập thành công'), setIsAuthenticated(true), nagivate('/'), setProfile(data.data.data.user)
+        toast('Đăng nhập thành công!'), setIsAuthenticated(true), nagivate('/'), setProfile(data.data.data.user)
       },
       onError: (errors: any) => {
         if (isAxiousUnprocessableEntity(errors)) {
