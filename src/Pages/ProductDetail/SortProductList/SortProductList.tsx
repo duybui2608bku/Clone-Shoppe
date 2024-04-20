@@ -16,7 +16,7 @@ interface Props {
 
 const SortProductList = ({ queryConfig, pageSize }: Props) => {
   const page = Number(queryConfig.page)
-  const { sort_by = sortBy.createdAt, oder } = queryConfig
+  const { sort_by = sortBy.createdAt } = queryConfig
   const naviagte = useNavigate()
   const isActiveSortBy = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
     return sort_by === sortByValue

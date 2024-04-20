@@ -14,6 +14,7 @@ import Cart from './Pages/Cart/Cart'
 import UseLayout from './Pages/User/Layout/UserLayout/UseLayout'
 import ChangePassword from './Pages/User/Pages/ChangePassword/ChangePaword'
 import HistoryPurchase from './Pages/User/Pages/HistoryPurchase/HistoryPurchase'
+import Page404 from './Pages/Page404/Page404'
 
 const useRouterElement = () => {
   const ProtectedRoute = () => {
@@ -56,6 +57,14 @@ const useRouterElement = () => {
           element: (
             <MainLayOut>
               <Cart />
+            </MainLayOut>
+          )
+        },
+        {
+          path: '*',
+          element: (
+            <MainLayOut>
+              <Page404 />
             </MainLayOut>
           )
         },

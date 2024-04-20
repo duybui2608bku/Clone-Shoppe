@@ -1,4 +1,4 @@
-import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router-dom'
 import './HistoryPurchase.scss'
 import path from '../../../../constants/path'
 import { purchasesStatus } from '../../../../constants/purchase'
@@ -11,6 +11,7 @@ import { TbTruckDelivery } from 'react-icons/tb'
 import ButtonShoppe from '../../../../Components/ButtonShoppe/ButtonShoppe'
 import { BiCheckShield } from 'react-icons/bi'
 import { formatCurrency } from '../../../../Utils/Utils'
+import { PurchaseListStatus } from '../../../../Types/Purchase.type'
 const HistoryPurchase = () => {
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchasesStatus.all
@@ -24,7 +25,7 @@ const HistoryPurchase = () => {
   ]
   const { data } = useQuery({
     queryKey: ['purchases', { status: status }],
-    queryFn: () => purchaseApi.getPurchaseList({ status: status as purchasesStatus })
+    queryFn: () => purchaseApi.getPurchaseList({ status: status as PurchaseListStatus })
   })
   const Purchase = data?.data.data
   console.log(Purchase)

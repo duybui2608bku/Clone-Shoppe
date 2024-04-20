@@ -19,8 +19,7 @@ import { omit } from 'lodash'
 import { getAvatar } from '../../Types/Utils.type'
 const HeaderMain = () => {
   const [language, setLanguage] = useState<Boolean>(true)
-  const { isAuthenticated, setIsAuthenticated, profile } = useContext(AppContext)
-  console.log(profile?.avatar)
+  const { isAuthenticated, profile } = useContext(AppContext)
 
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
@@ -29,7 +28,6 @@ const HeaderMain = () => {
       name: ''
     }
   })
-  console.log(profile)
   const onSubmitSearch = handleSubmit((data) => {
     navigate({
       pathname: path.home,

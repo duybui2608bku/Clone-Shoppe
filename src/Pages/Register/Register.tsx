@@ -91,7 +91,7 @@ const Register = () => {
               <div className='error-form'></div>
             )}
             <button disabled={errorForm} style={errorForm ? { cursor: 'no-drop' } : {}} className='btn-login'>
-              Đăng Nhập
+              Đăng Kí
             </button>
           </form>
           <div className='login-password'>

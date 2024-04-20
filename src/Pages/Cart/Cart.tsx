@@ -171,8 +171,15 @@ const Cart = () => {
             </div>
           </div>
           {extenedPurchase.map((product, index) => {
-            totalPrice += product.price * product.buy_count
-            totalSave += product.price_before_discount * product.buy_count - product.price * product.buy_count
+            {
+              product.checked ? (totalPrice += product.price * product.buy_count) : 0
+            }
+            {
+              product.checked
+                ? (totalSave += product.price_before_discount * product.buy_count - product.price * product.buy_count)
+                : 0
+            }
+
             return (
               <>
                 <div key={product._id} className='cart-item-container'>

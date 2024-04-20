@@ -31,13 +31,6 @@ import path from '../../constants/path'
 const ProductItem = () => {
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
-  const images = [
-    'https://cf.shopee.vn/file/vn-50009109-ff3806f443aada213cb77de3b9305310_xxhdpi',
-    'https://cf.shopee.vn/file/vn-50009109-3fbe50f24cc6db0332ea13fd843f4c57_xxhdpi',
-    'https://cf.shopee.vn/file/vn-50009109-ce314cce36baacc7ffbcf7378fa4c526_xxhdpi',
-    'https://cf.shopee.vn/file/vn-50009109-b09710fe00237f7babeb3755a861cdc0_xxhdpi',
-    'https://cf.shopee.vn/file/vn-50009109-b09710fe00237f7babeb3755a861cdc0_xxhdpi'
-  ]
 
   const productOther = [
     {
@@ -142,7 +135,11 @@ const ProductItem = () => {
   }
 
   const addToCartMutation = useMutation({
-    mutationFn: (body: { buy_count: number; product_id: string }) => purchaseApi.addToCart(body)
+    mutationFn: (body: { buy_count: number; product_id: string }) => purchaseApi.addToCart(body),
+    onError: (_) => {
+      nagivate(path.login)
+      toast.error('Vui Lòng Đăng Nhập')
+    }
   })
 
   const queryClient = useQueryClient()
