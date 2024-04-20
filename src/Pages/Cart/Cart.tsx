@@ -153,7 +153,7 @@ const Cart = () => {
         <div className='cart-container'>
           <Helmet>
             <title>Giỏ Hàng</title>
-            <meta name='description' content='Giỏ Hàng' />
+            <meta name='description-1' content='Giỏ Hàng' />
           </Helmet>
           <div className='cart-freeship'>
             <img
