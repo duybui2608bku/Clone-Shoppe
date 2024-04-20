@@ -27,6 +27,7 @@ import purchaseApi from '../../Services/Purchase.api'
 import { purchasesStatus } from '../../constants/purchase'
 import { toast } from 'react-toastify'
 import path from '../../constants/path'
+import { Helmet } from 'react-helmet'
 
 const ProductItem = () => {
   const { nameId } = useParams()
@@ -193,6 +194,10 @@ const ProductItem = () => {
   return (
     <>
       <div className='product-item-container'>
+        <Helmet>
+          <title>{product.name}</title>
+          <meta name='description' content='Sản phẩm' />
+        </Helmet>
         <div className='product-item-left'>
           <div className='product-img-main' onMouseLeave={handleRemoveZoom} onMouseMove={handleZoom}>
             <img ref={imgRef} src={activeImage} alt={product?.name} />

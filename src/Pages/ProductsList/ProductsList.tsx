@@ -13,6 +13,7 @@ import { formatCurrency, formatNumberToSocialStyle } from '../../Utils/Utils'
 import { useNavigate } from 'react-router-dom'
 import { generateNameId } from '../../Types/Utils.type'
 import path from '../../constants/path'
+import { Helmet } from 'react-helmet'
 
 const ProductList = () => {
   const images = [
@@ -159,6 +160,10 @@ const ProductList = () => {
   return (
     <>
       <div className='slider-container'>
+        <Helmet>
+          <title>Trang Chủ</title>
+          <meta name='description' content='Trang Chủ' />
+        </Helmet>
         <div className='slider-left'>
           <Carousel>
             {images.map((image, index) => (

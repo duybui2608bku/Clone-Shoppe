@@ -1,6 +1,12 @@
+import { Helmet } from 'react-helmet'
+
 const Page404 = () => {
   return (
     <>
+      <Helmet>
+        <title>404 Not Found</title>
+        <meta name='description' content='404 Not Found' />
+      </Helmet>
       <div className='text-center'>
         <h1 className='mb-4 text-6xl font-semibold text-red-500'>404</h1>
         <p className='mb-4 text-lg text-gray-600'>Oops! Looks like you're lost.</p>

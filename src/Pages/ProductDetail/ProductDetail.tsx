@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import path from '../../constants/path'
 import { generateNameId } from '../../Types/Utils.type'
 import useQueryConfig from '../../Hooks/useQueryConfig'
+import { Helmet } from 'react-helmet'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
@@ -54,6 +55,10 @@ const ProductDetail = () => {
   return (
     <>
       <div className='products-detail-container'>
+        <Helmet>
+          <title>Mua sắm | Tìm Kiếm</title>
+          <meta name='description' content='Mua sắm | Tìm Kiếm' />
+        </Helmet>
         <div className='products-slider'>
           <Carousel>
             {images.map((image, index) => (

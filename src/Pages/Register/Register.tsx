@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { omit } from 'lodash'
 import { isAxiousUnprocessableEntity } from '../../Utils/Utils'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 const Register = () => {
   const [errorForm, setErrorForm] = useState<boolean>(false)
   const navigate = useNavigate()
@@ -52,6 +53,10 @@ const Register = () => {
   return (
     <>
       <div className='login-container'>
+        <Helmet>
+          <title>Đăng Kí</title>
+          <meta name='description' content='Đăng Kí' />
+        </Helmet>
         <div className='login-form'>
           <div className='des'>Đăng Kí</div>
           <form className='form-controls' onSubmit={onSubmit}>

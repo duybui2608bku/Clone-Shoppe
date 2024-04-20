@@ -25,7 +25,7 @@ type FormData = {
 
 const AsideFilter = ({ categories, queryConfig }: Props) => {
   const { category } = queryConfig
-  const { control, watch } = useForm<FormData>({
+  const { control, watch, reset } = useForm<FormData>({
     defaultValues: {
       price_min: '',
       price_max: ''
@@ -47,6 +47,7 @@ const AsideFilter = ({ categories, queryConfig }: Props) => {
   }
 
   const handleRemoveAllFilter = () => {
+    reset()
     nagivate({
       pathname: path.home,
       search: createSearchParams(omit(queryConfig, ['price_min', 'price_max', 'rating_filter', 'category'])).toString()

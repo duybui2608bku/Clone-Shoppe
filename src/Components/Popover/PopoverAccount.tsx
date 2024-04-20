@@ -34,7 +34,7 @@ const PopoverAccount = () => {
         <Link className='a' to={path.profile}>
           Tài Khoản Của Tôi
         </Link>
-        <Link className='a' to='/'>
+        <Link className='a' to={path.historyPurchase}>
           Đơn Mua
         </Link>
         <Link onClick={handleLogOut} className='a' to='/'>
