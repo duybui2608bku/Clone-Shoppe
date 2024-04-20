@@ -12,7 +12,6 @@ import { Purchase } from '../../Types/Purchase.type'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
 
 interface ExtendePurchase extends Purchase {
   disable: boolean
@@ -151,10 +150,6 @@ const Cart = () => {
     <>
       {extenedPurchase.length > 0 ? (
         <div className='cart-container'>
-          <Helmet>
-            <title>Giỏ Hàng</title>
-            <meta name='description-1' content='Giỏ Hàng' />
-          </Helmet>
           <div className='cart-freeship'>
             <img
               width={'25px'}

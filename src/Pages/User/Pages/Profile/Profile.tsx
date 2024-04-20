@@ -11,7 +11,6 @@ import { AppContext } from '../../../../Context/App.context'
 import { setProfileFromLS } from '../../../../Utils/Auth'
 import { getAvatar } from '../../../../Types/Utils.type'
 import config from '../../../../constants/config'
-import { Helmet } from 'react-helmet'
 interface FormDataUser {
   name: string
   phone: string
@@ -115,10 +114,6 @@ const Profile = () => {
   return (
     <>
       <div className='proflie-container'>
-        <Helmet>
-          <title>Thông Tin</title>
-          <meta name='description' content='Thông Tin' />
-        </Helmet>
         <div className='des'>
           <div>Hồ Sơ Của Tôi</div>
           <div>Quản lí thông tin hồ sơ để bảo mật tài khoản</div>
