@@ -12,6 +12,7 @@ import ButtonShoppe from '../../../../Components/ButtonShoppe/ButtonShoppe'
 import { BiCheckShield } from 'react-icons/bi'
 import { formatCurrency } from '../../../../Utils/Utils'
 import { PurchaseListStatus } from '../../../../Types/Purchase.type'
+import { Helmet } from 'react-helmet'
 const HistoryPurchase = () => {
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchasesStatus.all
@@ -50,7 +51,13 @@ const HistoryPurchase = () => {
   if (!Purchase) return null
   return (
     <>
-      <div className='history-purchase-container'>{purchaseTabLinks}</div>
+      <div className='history-purchase-container'>
+        <Helmet>
+          <title>Đơn Mua</title>
+          <meta name='description' content='Đơn Mua' />
+        </Helmet>
+        {purchaseTabLinks}
+      </div>
       <div className='history-purchase-item'>
         {Purchase?.length > 0 ? (
           Purchase?.map((purchase, index) => {

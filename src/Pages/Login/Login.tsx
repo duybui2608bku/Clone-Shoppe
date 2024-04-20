@@ -10,7 +10,7 @@ import { useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 import { isAxiousUnprocessableEntity } from '../../Utils/Utils'
 import { AppContext } from '../../Context/App.context'
-
+import { Helmet } from 'react-helmet'
 const Login = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const nagivate = useNavigate()
@@ -52,6 +52,10 @@ const Login = () => {
   return (
     <>
       <div className='login-container'>
+        <Helmet>
+          <title>Đăng Nhập</title>
+          <meta name='description' content='Đăng Nhập' />
+        </Helmet>
         <div className='login-form'>
           <div className='des'>Đăng Nhập</div>
           <form className='form-controls' onSubmit={onSubmit}>

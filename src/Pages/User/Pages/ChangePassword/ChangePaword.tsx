@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import ButtonShoppe from '../../../../Components/ButtonShoppe/ButtonShoppe'
 import './ChangePassword.scss'
 import { getRules } from '../../../../Utils/ruls'
+import { Helmet } from 'react-helmet'
 interface BodyPassword extends BodyUpdateProfile {
   password: string
   new_password: string
@@ -39,6 +40,10 @@ const ChangePassword = () => {
   return (
     <>
       <div className='change-password-container'>
+        <Helmet>
+          <title>Đổi Mật Khẩu</title>
+          <meta name='description' content='Đổi Mật Khẩu' />
+        </Helmet>
         <div className='des'>
           <div>Thêm mật khẩu</div>
           <div>Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</div>
