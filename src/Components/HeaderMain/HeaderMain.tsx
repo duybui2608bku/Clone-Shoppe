@@ -47,7 +47,7 @@ const HeaderMain = () => {
       <div className='header-main-infor'>
         <div className='conected'>
           <Link className='a' to={'/'}>
-            Kênh Người Bán
+            Kênh Người Bán vip
           </Link>
           <Link className='a' to={'/'}>
             Tải Ứng Dụng
